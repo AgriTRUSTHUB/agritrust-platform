@@ -1,0 +1,1942 @@
+openapi: 3.1.0
+info:
+  title: Api
+  version: 0.1.0
+  description: AgriTRUST Platform API
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: auth
+    description: Authentication
+  - name: users
+    description: User profiles
+  - name: dashboard
+    description: Dashboard & analytics
+  - name: marketplace
+    description: Marketplace listings
+  - name: dealwise
+    description: DealWise AI negotiation
+  - name: qualityscan
+    description: QualityScan AI grading
+  - name: landshare
+    description: LandShare land leasing
+  - name: harvestfinance
+    description: Harvest finance & loans
+  - name: barter
+    description: Barter exchange
+  - name: agrihaul
+    description: AgriHaul logistics
+  - name: community
+    description: Community & social
+  - name: impact
+    description: ImpactLedger sustainability
+  - name: accounting
+    description: Farm accounting
+  - name: farmscore
+    description: FarmScore credit
+  - name: notifications
+    description: Notifications
+  - name: alerts
+    description: Theft alerts
+  - name: disputes
+    description: Disputes
+  - name: mentorship
+    description: Mentorship network
+  - name: academy
+    description: AgriAcademy courses
+
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+
+  # ── Auth ──────────────────────────────────────────────────────────────────
+  /auth/register:
+    post:
+      operationId: register
+      tags: [auth]
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterInput"
+      responses:
+        "201":
+          description: Registered
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+
+  /auth/login:
+    post:
+      operationId: login
+      tags: [auth]
+      summary: Login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginInput"
+      responses:
+        "200":
+          description: Logged in
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+
+  /auth/logout:
+    post:
+      operationId: logout
+      tags: [auth]
+      summary: Logout
+      responses:
+        "200":
+          description: Logged out
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  /auth/me:
+    get:
+      operationId: getMe
+      tags: [auth]
+      summary: Get current user
+      responses:
+        "200":
+          description: Current user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+
+  # ── Users ─────────────────────────────────────────────────────────────────
+  /users/{id}:
+    get:
+      operationId: getUser
+      tags: [users]
+      summary: Get user profile
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: User profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProfile"
+    patch:
+      operationId: updateUser
+      tags: [users]
+      summary: Update user profile
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProfile"
+
+  # ── Dashboard ─────────────────────────────────────────────────────────────
+  /dashboard/stats:
+    get:
+      operationId: getDashboardStats
+      tags: [dashboard]
+      summary: Get platform-wide stats
+      responses:
+        "200":
+          description: Platform stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PlatformStats"
+
+  /dashboard/activity:
+    get:
+      operationId: getActivityFeed
+      tags: [dashboard]
+      summary: Get recent activity feed
+      parameters:
+        - name: limit
+          in: query
+          schema: { type: integer, default: 20 }
+      responses:
+        "200":
+          description: Activity feed
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ActivityItem"
+
+  /dashboard/user-summary:
+    get:
+      operationId: getUserDashboardSummary
+      tags: [dashboard]
+      summary: Get personal dashboard summary
+      responses:
+        "200":
+          description: User summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserDashboardSummary"
+
+  # ── Marketplace ───────────────────────────────────────────────────────────
+  /marketplace/listings:
+    get:
+      operationId: listListings
+      tags: [marketplace]
+      summary: List marketplace listings
+      parameters:
+        - name: category
+          in: query
+          schema: { type: string }
+        - name: search
+          in: query
+          schema: { type: string }
+        - name: minPrice
+          in: query
+          schema: { type: number }
+        - name: maxPrice
+          in: query
+          schema: { type: number }
+        - name: page
+          in: query
+          schema: { type: integer, default: 1 }
+        - name: limit
+          in: query
+          schema: { type: integer, default: 20 }
+      responses:
+        "200":
+          description: Listings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListingsPage"
+    post:
+      operationId: createListing
+      tags: [marketplace]
+      summary: Create a listing
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ListingInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Listing"
+
+  /marketplace/listings/{id}:
+    get:
+      operationId: getListing
+      tags: [marketplace]
+      summary: Get listing by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Listing
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Listing"
+    patch:
+      operationId: updateListing
+      tags: [marketplace]
+      summary: Update listing
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ListingUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Listing"
+    delete:
+      operationId: deleteListing
+      tags: [marketplace]
+      summary: Delete listing
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "204":
+          description: Deleted
+
+  /marketplace/featured:
+    get:
+      operationId: getFeaturedListings
+      tags: [marketplace]
+      summary: Get featured/trending listings
+      responses:
+        "200":
+          description: Featured listings
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Listing"
+
+  # ── DealWise ──────────────────────────────────────────────────────────────
+  /dealwise/negotiations:
+    get:
+      operationId: listNegotiations
+      tags: [dealwise]
+      summary: List my negotiations
+      responses:
+        "200":
+          description: Negotiations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Negotiation"
+    post:
+      operationId: createNegotiation
+      tags: [dealwise]
+      summary: Start a negotiation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NegotiationInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Negotiation"
+
+  /dealwise/negotiations/{id}:
+    get:
+      operationId: getNegotiation
+      tags: [dealwise]
+      summary: Get negotiation detail
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Negotiation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NegotiationDetail"
+
+  /dealwise/negotiations/{id}/offer:
+    post:
+      operationId: submitOffer
+      tags: [dealwise]
+      summary: Submit counter offer
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OfferInput"
+      responses:
+        "200":
+          description: Updated negotiation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Negotiation"
+
+  /dealwise/negotiations/{id}/accept:
+    post:
+      operationId: acceptNegotiation
+      tags: [dealwise]
+      summary: Accept deal
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Negotiation"
+
+  # ── QualityScan ───────────────────────────────────────────────────────────
+  /qualityscan/scans:
+    get:
+      operationId: listScans
+      tags: [qualityscan]
+      summary: List quality scans
+      responses:
+        "200":
+          description: Scans
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/QualityScan"
+    post:
+      operationId: createScan
+      tags: [qualityscan]
+      summary: Submit a quality scan
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/QualityScanInput"
+      responses:
+        "201":
+          description: Scan result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QualityScan"
+
+  /qualityscan/scans/{id}:
+    get:
+      operationId: getScan
+      tags: [qualityscan]
+      summary: Get scan result
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Scan
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QualityScan"
+
+  # ── LandShare ─────────────────────────────────────────────────────────────
+  /landshare/listings:
+    get:
+      operationId: listLandListings
+      tags: [landshare]
+      summary: List land listings
+      parameters:
+        - name: region
+          in: query
+          schema: { type: string }
+        - name: minHectares
+          in: query
+          schema: { type: number }
+        - name: maxPrice
+          in: query
+          schema: { type: number }
+      responses:
+        "200":
+          description: Land listings
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/LandListing"
+    post:
+      operationId: createLandListing
+      tags: [landshare]
+      summary: List land for lease
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LandListingInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LandListing"
+
+  /landshare/listings/{id}:
+    get:
+      operationId: getLandListing
+      tags: [landshare]
+      summary: Get land listing
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Land listing
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LandListing"
+
+  # ── Harvest Finance ───────────────────────────────────────────────────────
+  /harvest-finance/loans:
+    get:
+      operationId: listLoans
+      tags: [harvestfinance]
+      summary: List loan applications
+      responses:
+        "200":
+          description: Loans
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/LoanApplication"
+    post:
+      operationId: applyForLoan
+      tags: [harvestfinance]
+      summary: Apply for a loan
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoanInput"
+      responses:
+        "201":
+          description: Application submitted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoanApplication"
+
+  /harvest-finance/loans/{id}:
+    get:
+      operationId: getLoan
+      tags: [harvestfinance]
+      summary: Get loan application
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Loan
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoanApplication"
+
+  # ── Barter ────────────────────────────────────────────────────────────────
+  /barter/items:
+    get:
+      operationId: listBarterItems
+      tags: [barter]
+      summary: List barter items
+      responses:
+        "200":
+          description: Barter items
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/BarterItem"
+    post:
+      operationId: createBarterItem
+      tags: [barter]
+      summary: Post a barter item
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BarterItemInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BarterItem"
+
+  /barter/trades:
+    get:
+      operationId: listTrades
+      tags: [barter]
+      summary: List my barter trades
+      responses:
+        "200":
+          description: Trades
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/BarterTrade"
+    post:
+      operationId: proposeTrade
+      tags: [barter]
+      summary: Propose a barter trade
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BarterTradeInput"
+      responses:
+        "201":
+          description: Trade proposed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BarterTrade"
+
+  # ── AgriHaul ──────────────────────────────────────────────────────────────
+  /agrihaul/shipments:
+    get:
+      operationId: listShipments
+      tags: [agrihaul]
+      summary: List shipments
+      responses:
+        "200":
+          description: Shipments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Shipment"
+    post:
+      operationId: createShipment
+      tags: [agrihaul]
+      summary: Book a shipment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ShipmentInput"
+      responses:
+        "201":
+          description: Shipment booked
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Shipment"
+
+  /agrihaul/shipments/{id}:
+    get:
+      operationId: getShipment
+      tags: [agrihaul]
+      summary: Get shipment details
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Shipment
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Shipment"
+
+  # ── Community ─────────────────────────────────────────────────────────────
+  /community/posts:
+    get:
+      operationId: listPosts
+      tags: [community]
+      summary: List community posts
+      parameters:
+        - name: category
+          in: query
+          schema: { type: string }
+        - name: page
+          in: query
+          schema: { type: integer, default: 1 }
+        - name: limit
+          in: query
+          schema: { type: integer, default: 20 }
+      responses:
+        "200":
+          description: Posts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CommunityPost"
+    post:
+      operationId: createPost
+      tags: [community]
+      summary: Create community post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostInput"
+      responses:
+        "201":
+          description: Post created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CommunityPost"
+
+  /community/posts/{id}:
+    get:
+      operationId: getPost
+      tags: [community]
+      summary: Get post
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Post
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CommunityPost"
+
+  /community/posts/{id}/like:
+    post:
+      operationId: likePost
+      tags: [community]
+      summary: Like/unlike a post
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Updated post
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CommunityPost"
+
+  /community/posts/{id}/comments:
+    get:
+      operationId: listComments
+      tags: [community]
+      summary: List comments for post
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Comments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Comment"
+    post:
+      operationId: createComment
+      tags: [community]
+      summary: Comment on a post
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CommentInput"
+      responses:
+        "201":
+          description: Comment created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Comment"
+
+  # ── ImpactLedger ──────────────────────────────────────────────────────────
+  /impact/stats:
+    get:
+      operationId: getImpactStats
+      tags: [impact]
+      summary: Get platform impact statistics
+      responses:
+        "200":
+          description: Impact stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ImpactStats"
+
+  /impact/activities:
+    get:
+      operationId: listImpactActivities
+      tags: [impact]
+      summary: List sustainability activities
+      responses:
+        "200":
+          description: Activities
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ImpactActivity"
+    post:
+      operationId: logImpactActivity
+      tags: [impact]
+      summary: Log an impact activity
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ImpactActivityInput"
+      responses:
+        "201":
+          description: Activity logged
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ImpactActivity"
+
+  # ── Farm Accounting ───────────────────────────────────────────────────────
+  /accounting/transactions:
+    get:
+      operationId: listTransactions
+      tags: [accounting]
+      summary: List farm transactions
+      parameters:
+        - name: type
+          in: query
+          schema: { type: string }
+        - name: from
+          in: query
+          schema: { type: string }
+        - name: to
+          in: query
+          schema: { type: string }
+      responses:
+        "200":
+          description: Transactions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Transaction"
+    post:
+      operationId: createTransaction
+      tags: [accounting]
+      summary: Record a transaction
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TransactionInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Transaction"
+
+  /accounting/summary:
+    get:
+      operationId: getAccountSummary
+      tags: [accounting]
+      summary: Get financial summary
+      responses:
+        "200":
+          description: Financial summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccountSummary"
+
+  # ── FarmScore ─────────────────────────────────────────────────────────────
+  /farmscore:
+    get:
+      operationId: getFarmScore
+      tags: [farmscore]
+      summary: Get FarmScore credit rating
+      responses:
+        "200":
+          description: Farm score
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FarmScore"
+
+  # ── Notifications ─────────────────────────────────────────────────────────
+  /notifications:
+    get:
+      operationId: listNotifications
+      tags: [notifications]
+      summary: List notifications
+      parameters:
+        - name: unread
+          in: query
+          schema: { type: boolean }
+      responses:
+        "200":
+          description: Notifications
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Notification"
+
+  /notifications/{id}/read:
+    patch:
+      operationId: markNotificationRead
+      tags: [notifications]
+      summary: Mark notification as read
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Notification"
+
+  /notifications/read-all:
+    post:
+      operationId: markAllNotificationsRead
+      tags: [notifications]
+      summary: Mark all notifications read
+      responses:
+        "200":
+          description: Done
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  # ── Theft Alerts ──────────────────────────────────────────────────────────
+  /alerts:
+    get:
+      operationId: listAlerts
+      tags: [alerts]
+      summary: List theft alerts
+      responses:
+        "200":
+          description: Alerts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TheftAlert"
+    post:
+      operationId: createAlert
+      tags: [alerts]
+      summary: Report theft
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TheftAlertInput"
+      responses:
+        "201":
+          description: Alert created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TheftAlert"
+
+  /alerts/{id}:
+    get:
+      operationId: getAlert
+      tags: [alerts]
+      summary: Get theft alert
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Alert
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TheftAlert"
+
+  # ── Disputes ──────────────────────────────────────────────────────────────
+  /disputes:
+    get:
+      operationId: listDisputes
+      tags: [disputes]
+      summary: List disputes
+      responses:
+        "200":
+          description: Disputes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Dispute"
+    post:
+      operationId: createDispute
+      tags: [disputes]
+      summary: File a dispute
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DisputeInput"
+      responses:
+        "201":
+          description: Dispute filed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Dispute"
+
+  /disputes/{id}:
+    get:
+      operationId: getDispute
+      tags: [disputes]
+      summary: Get dispute
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Dispute
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Dispute"
+
+  # ── Mentorship ────────────────────────────────────────────────────────────
+  /mentorship/mentors:
+    get:
+      operationId: listMentors
+      tags: [mentorship]
+      summary: List available mentors
+      parameters:
+        - name: specialty
+          in: query
+          schema: { type: string }
+      responses:
+        "200":
+          description: Mentors
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Mentor"
+
+  /mentorship/sessions:
+    get:
+      operationId: listMentorSessions
+      tags: [mentorship]
+      summary: List my mentorship sessions
+      responses:
+        "200":
+          description: Sessions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/MentorSession"
+    post:
+      operationId: requestMentorship
+      tags: [mentorship]
+      summary: Request a mentorship session
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MentorSessionInput"
+      responses:
+        "201":
+          description: Session requested
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MentorSession"
+
+  # ── Academy ───────────────────────────────────────────────────────────────
+  /academy/courses:
+    get:
+      operationId: listCourses
+      tags: [academy]
+      summary: List academy courses
+      parameters:
+        - name: category
+          in: query
+          schema: { type: string }
+        - name: level
+          in: query
+          schema: { type: string }
+      responses:
+        "200":
+          description: Courses
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Course"
+
+  /academy/courses/{id}:
+    get:
+      operationId: getCourse
+      tags: [academy]
+      summary: Get course detail
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Course
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Course"
+
+  /academy/courses/{id}/enroll:
+    post:
+      operationId: enrollCourse
+      tags: [academy]
+      summary: Enroll in a course
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Enrolled
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Enrollment"
+
+  /academy/enrollments:
+    get:
+      operationId: listEnrollments
+      tags: [academy]
+      summary: List my course enrollments
+      responses:
+        "200":
+          description: Enrollments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Enrollment"
+
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      required: [status]
+      properties:
+        status: { type: string }
+
+    MessageResponse:
+      type: object
+      required: [message]
+      properties:
+        message: { type: string }
+
+    # ── Auth Schemas ──────────────────────────────────────────────────────────
+    RegisterInput:
+      type: object
+      required: [name, email, password, role]
+      properties:
+        name: { type: string, minLength: 2 }
+        email: { type: string, format: email }
+        password: { type: string, minLength: 6 }
+        role: { type: string, enum: [farmer, buyer, investor, service_provider] }
+        region: { type: string }
+        phone: { type: string }
+
+    LoginInput:
+      type: object
+      required: [email, password]
+      properties:
+        email: { type: string, format: email }
+        password: { type: string }
+
+    AuthResponse:
+      type: object
+      required: [token, user]
+      properties:
+        token: { type: string }
+        user:
+          $ref: "#/components/schemas/User"
+
+    User:
+      type: object
+      required: [id, name, email, role, createdAt]
+      properties:
+        id: { type: integer }
+        name: { type: string }
+        email: { type: string }
+        role: { type: string }
+        avatarUrl: { type: ["string", "null"] }
+        region: { type: ["string", "null"] }
+        phone: { type: ["string", "null"] }
+        isVerified: { type: boolean }
+        farmScoreRating: { type: ["number", "null"] }
+        createdAt: { type: string, format: date-time }
+
+    UserProfile:
+      type: object
+      required: [id, name, email, role, createdAt]
+      properties:
+        id: { type: integer }
+        name: { type: string }
+        email: { type: string }
+        role: { type: string }
+        avatarUrl: { type: ["string", "null"] }
+        bio: { type: ["string", "null"] }
+        region: { type: ["string", "null"] }
+        phone: { type: ["string", "null"] }
+        farmName: { type: ["string", "null"] }
+        farmSizeHa: { type: ["number", "null"] }
+        crops: { type: ["string", "null"] }
+        isVerified: { type: boolean }
+        farmScoreRating: { type: ["number", "null"] }
+        totalSales: { type: integer }
+        totalListings: { type: integer }
+        memberSince: { type: string }
+        createdAt: { type: string, format: date-time }
+
+    UserUpdate:
+      type: object
+      properties:
+        name: { type: string }
+        bio: { type: string }
+        region: { type: string }
+        phone: { type: string }
+        farmName: { type: string }
+        farmSizeHa: { type: number }
+        crops: { type: string }
+        avatarUrl: { type: string }
+
+    # ── Dashboard Schemas ────────────────────────────────────────────────────
+    PlatformStats:
+      type: object
+      required: [totalFarmers, totalListings, totalTransacted, treesPlanted, disputeResolutionRate]
+      properties:
+        totalFarmers: { type: string }
+        totalListings: { type: string }
+        totalTransacted: { type: string }
+        treesPlanted: { type: string }
+        disputeResolutionRate: { type: string }
+
+    ActivityItem:
+      type: object
+      required: [id, type, description, createdAt]
+      properties:
+        id: { type: integer }
+        type: { type: string }
+        description: { type: string }
+        actorName: { type: ["string", "null"] }
+        actorAvatarUrl: { type: ["string", "null"] }
+        metadata: { type: ["string", "null"] }
+        createdAt: { type: string, format: date-time }
+
+    UserDashboardSummary:
+      type: object
+      required: [activeListings, pendingOrders, totalEarnings, farmScore, unreadNotifications]
+      properties:
+        activeListings: { type: integer }
+        pendingOrders: { type: integer }
+        totalEarnings: { type: number }
+        farmScore: { type: ["number", "null"] }
+        unreadNotifications: { type: integer }
+        activeLoanAmount: { type: ["number", "null"] }
+        savingsBalance: { type: ["number", "null"] }
+
+    # ── Marketplace Schemas ──────────────────────────────────────────────────
+    Listing:
+      type: object
+      required: [id, title, category, price, unit, quantity, status, sellerId, sellerName, createdAt]
+      properties:
+        id: { type: integer }
+        title: { type: string }
+        description: { type: ["string", "null"] }
+        category: { type: string }
+        price: { type: number }
+        unit: { type: string }
+        quantity: { type: number }
+        availableQty: { type: number }
+        imageUrl: { type: ["string", "null"] }
+        region: { type: ["string", "null"] }
+        grade: { type: ["string", "null"] }
+        certifications: { type: ["string", "null"] }
+        status: { type: string }
+        isFeatured: { type: boolean }
+        sellerId: { type: integer }
+        sellerName: { type: string }
+        sellerRating: { type: ["number", "null"] }
+        viewCount: { type: integer }
+        createdAt: { type: string, format: date-time }
+
+    ListingInput:
+      type: object
+      required: [title, category, price, unit, quantity]
+      properties:
+        title: { type: string, minLength: 3 }
+        description: { type: string }
+        category: { type: string }
+        price: { type: number }
+        unit: { type: string }
+        quantity: { type: number }
+        imageUrl: { type: string }
+        region: { type: string }
+        grade: { type: string }
+        certifications: { type: string }
+
+    ListingUpdate:
+      type: object
+      properties:
+        title: { type: string }
+        description: { type: string }
+        price: { type: number }
+        quantity: { type: number }
+        availableQty: { type: number }
+        imageUrl: { type: string }
+        status: { type: string }
+
+    ListingsPage:
+      type: object
+      required: [items, total, page, limit]
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/Listing"
+        total: { type: integer }
+        page: { type: integer }
+        limit: { type: integer }
+
+    # ── DealWise Schemas ─────────────────────────────────────────────────────
+    Negotiation:
+      type: object
+      required: [id, listingId, buyerId, sellerId, status, currentPrice, createdAt]
+      properties:
+        id: { type: integer }
+        listingId: { type: integer }
+        listingTitle: { type: ["string", "null"] }
+        buyerId: { type: integer }
+        buyerName: { type: ["string", "null"] }
+        sellerId: { type: integer }
+        sellerName: { type: ["string", "null"] }
+        status: { type: string }
+        currentPrice: { type: number }
+        originalPrice: { type: number }
+        quantity: { type: number }
+        aiSuggestion: { type: ["string", "null"] }
+        createdAt: { type: string, format: date-time }
+
+    NegotiationDetail:
+      type: object
+      required: [id, listingId, buyerId, sellerId, status, currentPrice, createdAt, offers]
+      properties:
+        id: { type: integer }
+        listingId: { type: integer }
+        listingTitle: { type: ["string", "null"] }
+        buyerId: { type: integer }
+        buyerName: { type: ["string", "null"] }
+        sellerId: { type: integer }
+        sellerName: { type: ["string", "null"] }
+        status: { type: string }
+        currentPrice: { type: number }
+        originalPrice: { type: number }
+        quantity: { type: number }
+        aiSuggestion: { type: ["string", "null"] }
+        createdAt: { type: string, format: date-time }
+        offers:
+          type: array
+          items:
+            $ref: "#/components/schemas/OfferRecord"
+
+    OfferRecord:
+      type: object
+      required: [id, offeredBy, price, createdAt]
+      properties:
+        id: { type: integer }
+        offeredBy: { type: string }
+        price: { type: number }
+        note: { type: ["string", "null"] }
+        createdAt: { type: string, format: date-time }
+
+    NegotiationInput:
+      type: object
+      required: [listingId, offeredPrice, quantity]
+      properties:
+        listingId: { type: integer }
+        offeredPrice: { type: number }
+        quantity: { type: number }
+        note: { type: string }
+
+    OfferInput:
+      type: object
+      required: [price]
+      properties:
+        price: { type: number }
+        note: { type: string }
+
+    # ── QualityScan Schemas ──────────────────────────────────────────────────
+    QualityScan:
+      type: object
+      required: [id, cropType, grade, score, status, createdAt]
+      properties:
+        id: { type: integer }
+        cropType: { type: string }
+        imageUrl: { type: ["string", "null"] }
+        grade: { type: string }
+        score: { type: number }
+        moisture: { type: ["number", "null"] }
+        protein: { type: ["number", "null"] }
+        defects: { type: ["string", "null"] }
+        recommendations: { type: ["string", "null"] }
+        status: { type: string }
+        userId: { type: integer }
+        createdAt: { type: string, format: date-time }
+
+    QualityScanInput:
+      type: object
+      required: [cropType]
+      properties:
+        cropType: { type: string }
+        imageUrl: { type: string }
+        notes: { type: string }
+
+    # ── LandShare Schemas ─────────────────────────────────────────────────────
+    LandListing:
+      type: object
+      required: [id, title, region, hectares, pricePerHaPerYear, status, ownerId, ownerName, createdAt]
+      properties:
+        id: { type: integer }
+        title: { type: string }
+        description: { type: ["string", "null"] }
+        region: { type: string }
+        hectares: { type: number }
+        pricePerHaPerYear: { type: number }
+        soilType: { type: ["string", "null"] }
+        waterAccess: { type: boolean }
+        cropHistory: { type: ["string", "null"] }
+        imageUrl: { type: ["string", "null"] }
+        status: { type: string }
+        ownerId: { type: integer }
+        ownerName: { type: string }
+        createdAt: { type: string, format: date-time }
+
+    LandListingInput:
+      type: object
+      required: [title, region, hectares, pricePerHaPerYear]
+      properties:
+        title: { type: string }
+        description: { type: string }
+        region: { type: string }
+        hectares: { type: number }
+        pricePerHaPerYear: { type: number }
+        soilType: { type: string }
+        waterAccess: { type: boolean }
+        cropHistory: { type: string }
+        imageUrl: { type: string }
+
+    # ── Harvest Finance Schemas ───────────────────────────────────────────────
+    LoanApplication:
+      type: object
+      required: [id, amount, purpose, status, interestRate, term, userId, createdAt]
+      properties:
+        id: { type: integer }
+        amount: { type: number }
+        purpose: { type: string }
+        status: { type: string }
+        interestRate: { type: number }
+        term: { type: integer }
+        collateral: { type: ["string", "null"] }
+        approvedAt: { type: ["string", "null"] }
+        disbursedAt: { type: ["string", "null"] }
+        userId: { type: integer }
+        farmScoreAtApplication: { type: ["number", "null"] }
+        createdAt: { type: string, format: date-time }
+
+    LoanInput:
+      type: object
+      required: [amount, purpose, term]
+      properties:
+        amount: { type: number }
+        purpose: { type: string }
+        term: { type: integer }
+        collateral: { type: string }
+
+    # ── Barter Schemas ────────────────────────────────────────────────────────
+    BarterItem:
+      type: object
+      required: [id, title, category, quantity, unit, userId, userName, status, createdAt]
+      properties:
+        id: { type: integer }
+        title: { type: string }
+        description: { type: ["string", "null"] }
+        category: { type: string }
+        quantity: { type: number }
+        unit: { type: string }
+        imageUrl: { type: ["string", "null"] }
+        wantedFor: { type: ["string", "null"] }
+        status: { type: string }
+        userId: { type: integer }
+        userName: { type: string }
+        createdAt: { type: string, format: date-time }
+
+    BarterItemInput:
+      type: object
+      required: [title, category, quantity, unit]
+      properties:
+        title: { type: string }
+        description: { type: string }
+        category: { type: string }
+        quantity: { type: number }
+        unit: { type: string }
+        imageUrl: { type: string }
+        wantedFor: { type: string }
+
+    BarterTrade:
+      type: object
+      required: [id, offeredItemId, requestedItemId, status, proposerId, createdAt]
+      properties:
+        id: { type: integer }
+        offeredItemId: { type: integer }
+        requestedItemId: { type: integer }
+        status: { type: string }
+        proposerId: { type: integer }
+        proposerName: { type: ["string", "null"] }
+        message: { type: ["string", "null"] }
+        createdAt: { type: string, format: date-time }
+
+    BarterTradeInput:
+      type: object
+      required: [offeredItemId, requestedItemId]
+      properties:
+        offeredItemId: { type: integer }
+        requestedItemId: { type: integer }
+        message: { type: string }
+
+    # ── AgriHaul Schemas ──────────────────────────────────────────────────────
+    Shipment:
+      type: object
+      required: [id, origin, destination, cargoType, weightKg, status, userId, createdAt]
+      properties:
+        id: { type: integer }
+        origin: { type: string }
+        destination: { type: string }
+        cargoType: { type: string }
+        weightKg: { type: number }
+        status: { type: string }
+        trackingCode: { type: ["string", "null"] }
+        estimatedDelivery: { type: ["string", "null"] }
+        actualDelivery: { type: ["string", "null"] }
+        driverName: { type: ["string", "null"] }
+        driverPhone: { type: ["string", "null"] }
+        costNAD: { type: ["number", "null"] }
+        userId: { type: integer }
+        createdAt: { type: string, format: date-time }
+
+    ShipmentInput:
+      type: object
+      required: [origin, destination, cargoType, weightKg]
+      properties:
+        origin: { type: string }
+        destination: { type: string }
+        cargoType: { type: string }
+        weightKg: { type: number }
+        notes: { type: string }
+
+    # ── Community Schemas ─────────────────────────────────────────────────────
+    CommunityPost:
+      type: object
+      required: [id, title, content, category, authorId, authorName, likeCount, commentCount, createdAt]
+      properties:
+        id: { type: integer }
+        title: { type: string }
+        content: { type: string }
+        category: { type: string }
+        imageUrl: { type: ["string", "null"] }
+        authorId: { type: integer }
+        authorName: { type: string }
+        authorAvatarUrl: { type: ["string", "null"] }
+        likeCount: { type: integer }
+        commentCount: { type: integer }
+        isLikedByMe: { type: boolean }
+        isPinned: { type: boolean }
+        createdAt: { type: string, format: date-time }
+
+    PostInput:
+      type: object
+      required: [title, content, category]
+      properties:
+        title: { type: string, minLength: 3 }
+        content: { type: string, minLength: 10 }
+        category: { type: string }
+        imageUrl: { type: string }
+
+    Comment:
+      type: object
+      required: [id, content, authorId, authorName, postId, createdAt]
+      properties:
+        id: { type: integer }
+        content: { type: string }
+        authorId: { type: integer }
+        authorName: { type: string }
+        authorAvatarUrl: { type: ["string", "null"] }
+        postId: { type: integer }
+        createdAt: { type: string, format: date-time }
+
+    CommentInput:
+      type: object
+      required: [content]
+      properties:
+        content: { type: string, minLength: 1 }
+
+    # ── Impact Schemas ────────────────────────────────────────────────────────
+    ImpactStats:
+      type: object
+      required: [treesPlanted, co2OffsetTons, waterSavedLiters, organicFarmers, sustainableHectares]
+      properties:
+        treesPlanted: { type: integer }
+        co2OffsetTons: { type: number }
+        waterSavedLiters: { type: number }
+        organicFarmers: { type: integer }
+        sustainableHectares: { type: number }
+        sdgGoalsMet: { type: integer }
+
+    ImpactActivity:
+      type: object
+      required: [id, type, description, impactValue, unit, userId, createdAt]
+      properties:
+        id: { type: integer }
+        type: { type: string }
+        description: { type: string }
+        impactValue: { type: number }
+        unit: { type: string }
+        userId: { type: integer }
+        userName: { type: ["string", "null"] }
+        verifiedAt: { type: ["string", "null"] }
+        createdAt: { type: string, format: date-time }
+
+    ImpactActivityInput:
+      type: object
+      required: [type, description, impactValue, unit]
+      properties:
+        type: { type: string }
+        description: { type: string }
+        impactValue: { type: number }
+        unit: { type: string }
+
+    # ── Accounting Schemas ────────────────────────────────────────────────────
+    Transaction:
+      type: object
+      required: [id, type, amount, category, description, date, userId]
+      properties:
+        id: { type: integer }
+        type: { type: string, enum: [income, expense] }
+        amount: { type: number }
+        category: { type: string }
+        description: { type: string }
+        date: { type: string, format: date }
+        referenceId: { type: ["string", "null"] }
+        userId: { type: integer }
+        createdAt: { type: string, format: date-time }
+
+    TransactionInput:
+      type: object
+      required: [type, amount, category, description, date]
+      properties:
+        type: { type: string, enum: [income, expense] }
+        amount: { type: number }
+        category: { type: string }
+        description: { type: string }
+        date: { type: string, format: date }
+        referenceId: { type: string }
+
+    AccountSummary:
+      type: object
+      required: [totalIncome, totalExpenses, netProfit, currentMonth]
+      properties:
+        totalIncome: { type: number }
+        totalExpenses: { type: number }
+        netProfit: { type: number }
+        currentMonth:
+          type: object
+          required: [income, expenses, net]
+          properties:
+            income: { type: number }
+            expenses: { type: number }
+            net: { type: number }
+        monthlyTrend:
+          type: array
+          items:
+            type: object
+            required: [month, income, expenses]
+            properties:
+              month: { type: string }
+              income: { type: number }
+              expenses: { type: number }
+
+    # ── FarmScore Schemas ─────────────────────────────────────────────────────
+    FarmScore:
+      type: object
+      required: [score, tier, userId]
+      properties:
+        score: { type: number }
+        tier: { type: string }
+        userId: { type: integer }
+        salesHistory: { type: number }
+        paymentHistory: { type: number }
+        profileCompleteness: { type: number }
+        communityReputation: { type: number }
+        sustainabilityScore: { type: number }
+        lastUpdated: { type: string, format: date-time }
+
+    # ── Notification Schemas ──────────────────────────────────────────────────
+    Notification:
+      type: object
+      required: [id, type, title, message, isRead, userId, createdAt]
+      properties:
+        id: { type: integer }
+        type: { type: string }
+        title: { type: string }
+        message: { type: string }
+        isRead: { type: boolean }
+        linkUrl: { type: ["string", "null"] }
+        userId: { type: integer }
+        createdAt: { type: string, format: date-time }
+
+    # ── Theft Alert Schemas ───────────────────────────────────────────────────
+    TheftAlert:
+      type: object
+      required: [id, title, description, region, itemType, status, reporterId, createdAt]
+      properties:
+        id: { type: integer }
+        title: { type: string }
+        description: { type: string }
+        region: { type: string }
+        itemType: { type: string }
+        status: { type: string }
+        imageUrl: { type: ["string", "null"] }
+        rewardOffered: { type: ["number", "null"] }
+        reporterId: { type: integer }
+        reporterName: { type: ["string", "null"] }
+        resolvedAt: { type: ["string", "null"] }
+        createdAt: { type: string, format: date-time }
+
+    TheftAlertInput:
+      type: object
+      required: [title, description, region, itemType]
+      properties:
+        title: { type: string }
+        description: { type: string }
+        region: { type: string }
+        itemType: { type: string }
+        imageUrl: { type: string }
+        rewardOffered: { type: number }
+
+    # ── Dispute Schemas ───────────────────────────────────────────────────────
+    Dispute:
+      type: object
+      required: [id, title, description, type, status, complainantId, respondentId, createdAt]
+      properties:
+        id: { type: integer }
+        title: { type: string }
+        description: { type: string }
+        type: { type: string }
+        status: { type: string }
+        resolution: { type: ["string", "null"] }
+        complainantId: { type: integer }
+        complainantName: { type: ["string", "null"] }
+        respondentId: { type: integer }
+        respondentName: { type: ["string", "null"] }
+        relatedListingId: { type: ["integer", "null"] }
+        resolvedAt: { type: ["string", "null"] }
+        createdAt: { type: string, format: date-time }
+
+    DisputeInput:
+      type: object
+      required: [title, description, type, respondentId]
+      properties:
+        title: { type: string }
+        description: { type: string }
+        type: { type: string }
+        respondentId: { type: integer }
+        relatedListingId: { type: integer }
+        evidence: { type: string }
+
+    # ── Mentorship Schemas ────────────────────────────────────────────────────
+    Mentor:
+      type: object
+      required: [id, userId, name, specialty, rating, sessionsCompleted]
+      properties:
+        id: { type: integer }
+        userId: { type: integer }
+        name: { type: string }
+        avatarUrl: { type: ["string", "null"] }
+        specialty: { type: string }
+        bio: { type: ["string", "null"] }
+        rating: { type: number }
+        sessionsCompleted: { type: integer }
+        hourlyRateNAD: { type: ["number", "null"] }
+        isAvailable: { type: boolean }
+
+    MentorSession:
+      type: object
+      required: [id, mentorId, menteeId, topic, status, scheduledAt, createdAt]
+      properties:
+        id: { type: integer }
+        mentorId: { type: integer }
+        mentorName: { type: ["string", "null"] }
+        menteeId: { type: integer }
+        menteeName: { type: ["string", "null"] }
+        topic: { type: string }
+        status: { type: string }
+        scheduledAt: { type: string, format: date-time }
+        notes: { type: ["string", "null"] }
+        createdAt: { type: string, format: date-time }
+
+    MentorSessionInput:
+      type: object
+      required: [mentorId, topic, scheduledAt]
+      properties:
+        mentorId: { type: integer }
+        topic: { type: string }
+        scheduledAt: { type: string, format: date-time }
+        notes: { type: string }
+
+    # ── Academy Schemas ───────────────────────────────────────────────────────
+    Course:
+      type: object
+      required: [id, title, category, level, durationHours, enrollmentCount, rating, createdAt]
+      properties:
+        id: { type: integer }
+        title: { type: string }
+        description: { type: ["string", "null"] }
+        category: { type: string }
+        level: { type: string }
+        durationHours: { type: number }
+        thumbnailUrl: { type: ["string", "null"] }
+        instructorName: { type: string }
+        enrollmentCount: { type: integer }
+        rating: { type: number }
+        isFree: { type: boolean }
+        modules:
+          type: array
+          items:
+            type: object
+            required: [title, lessonCount]
+            properties:
+              title: { type: string }
+              lessonCount: { type: integer }
+        createdAt: { type: string, format: date-time }
+
+    Enrollment:
+      type: object
+      required: [id, courseId, userId, status, progressPercent, enrolledAt]
+      properties:
+        id: { type: integer }
+        courseId: { type: integer }
+        courseTitle: { type: ["string", "null"] }
+        userId: { type: integer }
+        status: { type: string }
+        progressPercent: { type: number }
+        completedAt: { type: ["string", "null"] }
+        certificateUrl: { type: ["string", "null"] }
+        enrolledAt: { type: string, format: date-time }

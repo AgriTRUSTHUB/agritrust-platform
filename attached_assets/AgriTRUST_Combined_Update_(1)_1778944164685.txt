@@ -1,0 +1,213 @@
+Three updates needed — do all three in one go:
+
+═══════════════════════════════════════════════
+1. FIX LEADERSHIP TEAM ON ABOUT US PAGE
+═══════════════════════════════════════════════
+
+On the /about page, find the Leadership Team section
+that currently shows 4 cards:
+- Dr. Ndapewa Haufiku
+- Petrus Nghifikepunye
+- Anna-Marie Steenkamp
+- Johannes Tjituka
+
+DELETE all 4 of those cards completely.
+
+Replace with ONLY these two cards side by side:
+
+CARD 1:
+Avatar initials: "LD"
+Avatar gradient: #1A6B3A → #0F4D28 (deep green)
+Name: Loide Dawid
+Title: Chief Executive Officer & Co-Founder
+Bio: "Loide Dawid is the visionary behind AgriTRUST.
+With a deep passion for food security and rural
+empowerment, she founded AgriTRUST to give Africa's
+farmers the trust, tools, and markets they deserve.
+Her leadership is rooted in the belief that agriculture
+must be both profitable and purposeful."
+Tags: "Agricultural Strategy" | "Food Security" |
+      "Rural Empowerment" | "Impact Leadership"
+Social icons: LinkedIn, Twitter/X (href="#")
+
+CARD 2:
+Avatar initials: "PI"
+Avatar gradient: #1A3A6B → #0F2347 (deep blue)
+Name: Paulus Indongo
+Title: Chief Technology Officer & Co-Founder
+Bio: "Paulus Indongo architects the technology that
+powers AgriTRUST's AI, blockchain, and digital
+infrastructure. With expertise in agricultural fintech
+and ethical AI, he ensures the platform is fast, secure,
+and accessible to every farmer — including those with
+basic phones in remote areas."
+Tags: "AI & Machine Learning" | "Blockchain" |
+      "AgriFinTech" | "Ethical Technology"
+Social icons: LinkedIn, GitHub, Twitter/X (href="#")
+
+LAYOUT:
+- Only 2 cards, centered on the page
+- Max width 720px, centered with mx-auto
+- Cards side by side on desktop (gap-8)
+- Stack vertically on mobile
+- Each card same style as current cards
+  (white bg, rounded-2xl, border, shadow)
+- Avatar circle: 96px, centered at top of card
+- Hover: translateY(-4px) transition duration-300
+
+Remove any other team members from this section.
+No other names should appear anywhere in this section.
+
+Closing line below the two cards (italic, centered, muted):
+"AgriTRUST is built with a growing team of
+agronomists, engineers, designers, and field agents
+across Southern Africa."
+
+═══════════════════════════════════════════════
+2. REDUCE SEED USERS TO EXACTLY 88
+═══════════════════════════════════════════════
+
+Reduce total seeded users from 88,000 to 88 users.
+Balance across roles so every platform feature works.
+
+ROLE BREAKDOWN (88 total):
+FARMER            → 30
+BUYER             → 12
+LANDOWNER         →  8
+TRANSPORTER       →  5
+VETERINARIAN      →  4
+AGRONOMIST        →  4
+COOPERATIVE       →  4
+INPUT_SUPPLIER    →  4
+EXPORTER          →  4
+PROCESSOR         →  3
+MENTOR            →  3
+INVESTOR          →  3
+LENDER            →  2
+INSURANCE_PARTNER →  2
+AGENT             →  2
+ADMIN             →  1
+NGO               →  1
+TRAINER           →  1
+TOTAL             → 88 ✓
+
+PIN THESE TWO AS THE FIRST USERS (never delete):
+
+User 1:
+firstName: "Loide"
+lastName: "Dawid"
+email: "loide.dawid@agritrust.com"
+role: ADMIN
+verificationLevel: PLATINUM
+trustScore: 99
+country: "Namibia"
+region: "Khomas"
+bio: "CEO & Co-Founder of AgriTRUST."
+
+User 2:
+firstName: "Paulus"
+lastName: "Indongo"
+email: "paulus.indongo@agritrust.com"
+role: ADMIN
+verificationLevel: PLATINUM
+trustScore: 99
+farmScore: 98
+country: "Namibia"
+region: "Khomas"
+bio: "CTO & Co-Founder of AgriTRUST."
+
+Paulus Indongo is the demo login user — keep
+his dashboard data (NAD 45,800 income) intact.
+
+RULES FOR ALL 88 USERS:
+- Realistic Namibian/Southern African names
+  (Ovambo, Herero, Damara, Nama, Kavango, Afrikaner)
+- Spread across all 14 Namibia regions
+- Verification: Platinum 8 | Gold 18 | Silver 32 | Bronze 30
+- Trust scores: Platinum 92-99 | Gold 78-91 |
+  Silver 58-77 | Bronze 35-57
+- Every FARMER gets a FarmPassport record
+
+SCALE RELATED DATA TO MATCH 88 USERS:
+Listings:           180  (avg 6 per farmer)
+Barter offers:       45
+Land listings:       22
+Harvest loans:       15
+Transactions:       200
+Reviews:            160
+Community posts:     40
+Theft alerts:         8
+Disputes:             5  (all resolved)
+Course enrollments: 120
+Impact records:      88  (min 1 per user)
+Mentorship sessions: 12
+
+Seed script must complete in under 30 seconds.
+Success message when done:
+"✅ AgriTRUST seeded: 88 users, 180 listings,
+ 200 transactions, 88 impact records. Ready."
+
+Add --reset flag:
+node server/seed/seed.js --reset
+(wipes all tables then reseeds cleanly)
+
+═══════════════════════════════════════════════
+3. UPDATE PLATFORM STATS TO MATCH PROTOTYPE
+═══════════════════════════════════════════════
+
+Find platformStats.js (or wherever the stats
+are hardcoded) and update every value to match
+the real prototype seed data of 88 users.
+
+Find these stats wherever they appear across
+the entire codebase — the /about page stats row,
+the homepage stats banner, and any other hardcoded
+stat displays — and replace them all:
+
+REMOVE THESE OLD VALUES:
+240,000+  Registered Farmers / Farmers
+180,000+  Active Listings
+NAD 2.4B  Total Transacted
+42,000+   Trees Planted
+95%       Dispute Resolution Rate
+26        Platform Features
+7         UN SDGs Addressed
+
+REPLACE WITH THESE PROTOTYPE VALUES:
+88        Platform Members
+180       Active Listings
+NAD 45,800 Value Transacted
+88        Impact Records Logged
+95%       Dispute Resolution Rate
+26        Platform Pillars
+14        UN SDGs Addressed
+
+UPDATE platformStats.js to:
+
+export const platformStats = {
+  platformMembers: 88,
+  activeListings: 180,
+  totalTransacted: "NAD 45,800",
+  impactRecords: 88,
+  disputeResolutionRate: "95%",
+  platformPillars: 26,
+  unSdgsAddressed: 14,
+  launchCountries: 5,
+  coursesAvailable: 60,
+  treesPlanted: 88,
+  barterExchanges: 45,
+  landShareAgreements: 22,
+}
+
+Make sure these values show correctly on:
+- The /about page stats row
+- The homepage stats banner below the hero
+- Any other location showing platform-wide numbers
+
+Do not pull from the database — keep these
+as hardcoded constants in platformStats.js
+so they are fast, reliable, and match the
+prototype exactly.
+
+As the platform grows, these numbers will be
+updated manually to reflect real growth.

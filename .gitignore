@@ -1,0 +1,86 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Environment variables — never commit
+.env
+**/.env
+.env.local
+.env.production
+
+# Build outputs
+dist/
+build/
+out/
+out-tsc/
+
+# Database
+*.db
+*.sqlite
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log
+
+# OS
+.DS_Store
+Thumbs.db
+*.swp
+
+# Editor
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.idea/
+*.sublime-workspace
+
+# TypeScript
+*.tsbuildinfo
+
+# Expo
+.expo/
+.expo-shared/
+**/dist/
+**/web-build/
+
+# Coverage
+coverage/
+*.lcov
+
+# Uploads
+artifacts/api-server/uploads/
+
+# Prisma
+**/prisma/migrations/dev.db
+
+# Misc
+.sass-cache/
+/connect.lock
+/libpeerconnection.log
+/typings
+testem.log
+
+# Internal workspace tooling (not needed in published repo)
+.local/
+.cache/
+.cursor/
+.github/instructions/
+
+# Replit configuration — not needed in repo
+.replit
+.replitignore
+replit.md
+replit.nix
+.replit.nix
+replit.toml
+.breakpoints
+.config/
+.upm/
+.replit
+.replitignore
+replit.md
+*replit*

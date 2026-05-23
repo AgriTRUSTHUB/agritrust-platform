@@ -1,0 +1,248 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "ysIJL6lVhFUb9n4A4hJYc"
+uri = "file://artifacts/agritrust-mobile/assets/images/icon.png"
+type = "image"
+title = "agritrust mobile icon"
+
+[[generated]]
+id = "B53UnHNBzdnrNHtsJXs6-"
+uri = "file://artifacts/agritrust/public/marketplace/maize-white.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "cO5rAefv8aE065YQTI_UE"
+uri = "file://artifacts/agritrust/public/marketplace/millet-mahangu.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "Y66qB2pKdzY8LCdvgAyNe"
+uri = "file://artifacts/agritrust/public/marketplace/sorghum.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "Ylra-HvZyNCJ1IBvL5Csx"
+uri = "file://artifacts/agritrust/public/marketplace/sunflower-seeds.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "gqj4ACUNMZus5tK9UPq_S"
+uri = "file://artifacts/agritrust/public/marketplace/groundnuts.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "b32Iziwi8uWB8dTGcoqz8"
+uri = "file://artifacts/agritrust/public/marketplace/vegetables-mixed.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "FWje6OBq5ND2_RQip2gGk"
+uri = "file://artifacts/agritrust/public/marketplace/tomatoes.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "QU2mfAgmWIuctOwTu7-Ry"
+uri = "file://artifacts/agritrust/public/marketplace/red-onions.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "W1KPSu3y_a1KosGIoNdIP"
+uri = "file://artifacts/agritrust/public/marketplace/potatoes.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "ExBghbENUnnYXx1TBEHHX"
+uri = "file://artifacts/agritrust/public/marketplace/butternut.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "ubnbXFksTLOrAa1ksNlB9"
+uri = "file://artifacts/agritrust/public/marketplace/peppers.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "Xn55cjpo4U8ZJAZfN_E1M"
+uri = "file://artifacts/agritrust/public/marketplace/garlic.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "ZalbntOqbvzAxgJKgihyS"
+uri = "file://artifacts/agritrust/public/marketplace/carrots.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "iwA5S5CmfV-ulPfkErQO0"
+uri = "file://artifacts/agritrust/public/marketplace/watermelon.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "HkI4KDG4lv61xzFds85zo"
+uri = "file://artifacts/agritrust/public/marketplace/mangoes.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "mtySF45me58K7eoFjE-pp"
+uri = "file://artifacts/agritrust/public/marketplace/papaya.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "3BIgBFyn8yd_Xx3bhdJjp"
+uri = "file://artifacts/agritrust/public/marketplace/brahman-bull.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "pZxRAO89TXIBS1l9BMmxH"
+uri = "file://artifacts/agritrust/public/marketplace/boer-goats.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "Azo6x2Slfrqwax86dFJBU"
+uri = "file://artifacts/agritrust/public/marketplace/dorper-sheep.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "_9VXXsZakhKwXyWgcjoMb"
+uri = "file://artifacts/agritrust/public/marketplace/chickens.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "ONq9dcQNt03tGt19j3-21"
+uri = "file://artifacts/agritrust/public/marketplace/eggs.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "oSeHZ6TTk1V7pBaHOAWEw"
+uri = "file://artifacts/agritrust/public/marketplace/goat-milk.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "vx8tq0Ca7bYdNVMTamas4"
+uri = "file://artifacts/agritrust/public/marketplace/honey.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "4t6pxZ_A-jbgI0hk093pl"
+uri = "file://artifacts/agritrust/public/marketplace/marula-oil.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "C1tYB8MqOwzf-flv5eK5O"
+uri = "file://artifacts/agritrust/public/marketplace/moringa.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "om8hO67cdlWpvBKwHH9Fk"
+uri = "file://artifacts/agritrust/public/marketplace/compost.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "yuH-AqdY68AfQT9XfiJzP"
+uri = "file://artifacts/agritrust/public/marketplace/animal-feed.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "fMp02w9nU5OZhUf0dGm3t"
+uri = "file://artifacts/agritrust/public/marketplace/biltong.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "lEU1Xp58q21RnWNkQEuNB"
+uri = "file://artifacts/agritrust/public/marketplace/mopane-worms.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "ARSl8RZIQNRPChx0FL7fj"
+uri = "file://artifacts/agritrust/public/marketplace/farmland-aerial.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "shV-36mpYeYwEZHk3inx7"
+uri = "file://artifacts/agritrust/public/marketplace/sweet-potatoes.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "vSIqx8-1v6mOxy8Tr8tPS"
+uri = "file://artifacts/agritrust/public/marketplace/cabbage.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "j0GxVBaulTf58VhQYskEc"
+uri = "file://artifacts/agritrust/public/marketplace/nguni-cattle.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "v-f7jLRIb6gvwcZAKBIXe"
+uri = "file://artifacts/agritrust/public/marketplace/tilapia.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "9m_uV41rxZUAk7niqwMsO"
+uri = "file://artifacts/agritrust/public/marketplace/bananas.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "NmvBk92h9ksbjedwqKXxZ"
+uri = "file://artifacts/agritrust/public/marketplace/fruit-jam.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "NyWCQc4yclPuG2xytPMFo"
+uri = "file://artifacts/agritrust/public/marketplace/solar-irrigation.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "VjFwNcdvt2DImpJFdi_KJ"
+uri = "file://artifacts/agritrust/public/marketplace/hay-bales.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "qk2mtl5rUZ72yGGx9FAq6"
+uri = "file://artifacts/agritrust/public/marketplace/spinach-kale.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "TAPebdJclGGO787zNhtf9"
+uri = "file://artifacts/agritrust/public/marketplace/sesame-seeds.png"
+type = "image"
+title = "generated_image"

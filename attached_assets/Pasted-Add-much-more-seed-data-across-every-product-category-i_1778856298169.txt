@@ -1,0 +1,524 @@
+Add much more seed data across every product category in the 
+marketplace. Every category must have at least 15-20 realistic 
+listings. All data must use real Namibian/Southern African 
+breeds, regions, prices in NAD, and authentic farmer names.
+
+═══════════════════════════════════════════════
+LIVESTOCK — CATTLE (20 listings)
+═══════════════════════════════════════════════
+
+Add these cattle listings to the seed data:
+
+1. Brahman Bull — Stud Quality
+   Price: NAD 18,500 | Region: Otjozondjupa
+   Breed: Brahman | Age: 36 months | Weight: 680kg
+   Health: Vaccinated, dewormed, FMD certified
+   Farmer: Petrus Hamutenya | Verified Seller ✓
+   Grade: Premium | Quantity: 1 head
+
+2. Bonsmara Heifers — Breeding Stock
+   Price: NAD 8,200 each | Region: Hardap
+   Breed: Bonsmara | Age: 18 months | Weight: 320kg
+   Health: Fully vaccinated, pregnancy tested negative
+   Farmer: David Mwetupunga | Verified Seller ✓
+   Quantity: 12 head available
+
+3. Nguni Cattle — Indigenous Breed
+   Price: NAD 6,800 each | Region: Kavango East
+   Breed: Nguni | Age: 24 months | Weight: 380kg
+   Health: Tick-free, dewormed, Brucellosis tested
+   Farmer: Abraham Tjiramba | Verified Seller ✓
+   Quantity: 8 head
+
+4. Simmentaler Bull — Commercial Grade
+   Price: NAD 22,000 | Region: Khomas
+   Breed: Simmentaler | Age: 48 months | Weight: 820kg
+   Farmer: Johannes Nghifindaka | Gold Verified ✓
+   Quantity: 1 head | Export Ready
+
+5. Afrikaner Cows — Breeding Herd
+   Price: NAD 7,500 each | Region: //Kharas
+   Breed: Afrikaner | Age: 3-5 years | Weight: 420kg
+   In-calf heifers, traditionally managed
+   Farmer: Sakeus Kambonde | Quantity: 25 head
+
+6. Brahman Cross Steers — Feedlot Ready
+   Price: NAD 9,800 each | Region: Omaheke
+   Weight: 420kg average | Age: 20 months
+   Ready for feedlot or direct slaughter
+   Farmer: Erastus Nangolo | Quantity: 40 head
+
+7. Limousin Cross Heifers
+   Price: NAD 7,200 each | Region: Otjozondjupa
+   Breed: Limousin X | Age: 16 months
+   Farmer: Maria Kahumba | Quantity: 6 head
+
+8. Bonsmara Bull — Young Stud
+   Price: NAD 14,500 | Region: Hardap
+   Breed: Bonsmara | Age: 28 months | Weight: 580kg
+   EBV tested, fertility checked
+   Farmer: Festus Amupanda | Quantity: 1
+
+9. Commercial Cows with Calves — Pairs
+   Price: NAD 11,200 per pair | Region: Erongo
+   Mixed breeds, calves 2-4 months old
+   Farmer: Hilma Nangolo | Quantity: 18 pairs
+
+10. Brahman Heifers — Replacement Stock
+    Price: NAD 7,800 each | Region: Otjozondjupa
+    Age: 14 months | Vaccinated
+    Farmer: Petrus Hamutenya | Quantity: 15 head
+
+11. Ankole-Watusi Cattle — Indigenous
+    Price: NAD 9,500 each | Region: Kavango West
+    Heritage breed, long-horned
+    Farmer: Ndapewa Mwinga | Quantity: 4 head
+
+12. Slaughter Steers — A-Grade
+    Price: NAD 12,000 each | Region: Khomas
+    Weight: 520kg+ | Abattoir ready
+    Farmer: Lukas Shikongo | Quantity: 30 head
+
+13. Tuli Cross Heifers
+    Price: NAD 6,500 each | Region: Omaheke
+    Heat-tolerant, tick-resistant breed
+    Farmer: Anna Tjihero | Quantity: 9 head
+
+14. Holstein Dairy Cows — High Production
+    Price: NAD 16,000 each | Region: Khomas
+    Production: 18-22 litres/day
+    Farmer: Heinrich Mouton | Quantity: 5 head
+
+15. Boran Bulls — Tick Resistant
+    Price: NAD 13,500 | Region: Kavango East
+    Adapted to northern Namibia conditions
+    Farmer: Joseph Haipinge | Quantity: 2 head
+
+═══════════════════════════════════════════════
+LIVESTOCK — GOATS (15 listings)
+═══════════════════════════════════════════════
+
+1. Boer Goat Rams — Stud Quality
+   Price: NAD 3,500 each | Region: Hardap
+   Breed: Boer | Weight: 95kg | Age: 18 months
+   Farmer: Daniel Swartbooi | Quantity: 4
+
+2. Kalahari Red Does — Breeding
+   Price: NAD 1,800 each | Region: //Kharas
+   Breed: Kalahari Red | Age: 2-3 years
+   Farmer: Grietjie Mouton | Quantity: 20
+
+3. Boer Goat Does — Commercial Herd
+   Price: NAD 1,500 each | Region: Hardap
+   Pregnant, due in 6 weeks
+   Farmer: Samuel Goagoseb | Quantity: 35
+
+4. Savanna White Goats
+   Price: NAD 2,200 each | Region: Otjozondjupa
+   White meat breed, fast-growing
+   Farmer: Fransina Katjivena | Quantity: 12
+
+5. Indigenous Ovambo Goats
+   Price: NAD 900 each | Region: Ohangwena
+   Hardy breed, communal farming
+   Farmer: Selma Nghidinwa | Quantity: 50
+
+6. Angora Goats — Mohair Producers
+   Price: NAD 2,800 each | Region: //Kharas
+   Shearing due next month
+   Farmer: Piet van Wyk | Quantity: 8
+
+7. Boer Cross Kids — Weaner
+   Price: NAD 650 each | Region: Hardap
+   3-4 months old, weaned
+   Farmer: Maria Hoëbeb | Quantity: 60
+
+8. Dairy Goats — Saanen Cross
+   Price: NAD 2,500 each | Region: Khomas
+   Production: 3-4 litres/day
+   Farmer: Frieda Kauaria | Quantity: 6
+
+9. Kalahari Red Rams
+   Price: NAD 2,800 each | Region: Omaheke
+   Fertile, multiple breed tested
+   Farmer: Gideon Isaaks | Quantity: 3
+
+10. Mixed Boer Goat Herd
+    Price: NAD 1,200 each | Region: Erongo
+    30 does, 2 rams included
+    Farmer: Naomi Tjipuka | Quantity: 32
+
+═══════════════════════════════════════════════
+LIVESTOCK — SHEEP (12 listings)
+═══════════════════════════════════════════════
+
+1. Karakul Ewes — Persian Wool
+   Price: NAD 1,200 each | Region: Hardap
+   Traditional Namibian breed, wool-producing
+   Farmer: Pieter Swarts | Quantity: 40
+
+2. Dorper Rams — Stud
+   Price: NAD 4,500 each | Region: //Kharas
+   Breed: Dorper | Weight: 110kg
+   Farmer: Sarel du Plessis | Quantity: 3
+
+3. Damara Sheep — Indigenous
+   Price: NAD 950 each | Region: Erongo
+   Heat and drought tolerant
+   Farmer: Thomas Goagoseb | Quantity: 25
+
+4. Merino Sheep — Wool Breed
+   Price: NAD 1,800 each | Region: //Kharas
+   Fine wool, shearing in 8 weeks
+   Farmer: Frikkie Louw | Quantity: 18
+
+5. Dorper Ewes — Commercial
+   Price: NAD 1,400 each | Region: Hardap
+   Good mothers, twins common
+   Farmer: Magdalena Boois | Quantity: 30
+
+6. Van Rooy Sheep
+   Price: NAD 1,100 each | Region: Hardap
+   Fat-tailed breed, meat quality
+   Farmer: Andries Witbooi | Quantity: 15
+
+7. Slaughter Lambs — Eid Ready
+   Price: NAD 1,600 each | Region: Khomas
+   Weight: 35-40kg, healthy
+   Farmer: Hassan Mouton | Quantity: 45
+
+═══════════════════════════════════════════════
+LIVESTOCK — POULTRY (10 listings)
+═══════════════════════════════════════════════
+
+1. Ross Broilers — 6 Weeks Ready
+   Price: NAD 65 each | Region: Khomas
+   Weight: 2.2kg average
+   Farmer: Frieda Kauaria | Quantity: 500
+
+2. Free-Range Village Chickens
+   Price: NAD 85 each | Region: Ohangwena
+   Indigenous breed, naturally raised
+   Farmer: Selma Nghidinwa | Quantity: 200
+
+3. Laying Hens — Peak Production
+   Price: NAD 120 each | Region: Khomas
+   Lohmann Brown, 28 weeks old
+   24-26 eggs per hen per month
+   Farmer: Hilma Nangolo | Quantity: 150
+
+4. Day-Old Chicks — Broiler
+   Price: NAD 18 each | Region: Khomas
+   Vaccinated, heat-treated
+   Farmer: Joseph Shikongo | Quantity: 1000
+
+5. Helmeted Guinea Fowl
+   Price: NAD 95 each | Region: Otjozondjupa
+   Free-range, indigenous
+   Farmer: Petrus Hamutenya | Quantity: 80
+
+6. Muscovy Ducks — Breeding Pairs
+   Price: NAD 180 per pair | Region: Kavango East
+   Excellent foragers, disease resistant
+   Farmer: Abraham Tjiramba | Quantity: 20 pairs
+
+7. Ostrich Chicks — 3 months
+   Price: NAD 850 each | Region: Hardap
+   Leather and meat production
+   Farmer: Kobus van Zyl | Quantity: 12
+
+8. Turkey — Tom & Hens
+   Price: NAD 350 each | Region: Khomas
+   Bronze breed, Christmas orders welcome
+   Farmer: Naomi Tjipuka | Quantity: 25
+
+═══════════════════════════════════════════════
+CROPS & VEGETABLES (20 listings)
+═══════════════════════════════════════════════
+
+1. Pearl Millet — Mahango
+   Price: NAD 8.50/kg | Region: Ohangwena
+   Harvest Date: March 2026 | Grade A
+   Quantity: 5,000kg | Organic
+   Farmer: Selma Nghidinwa | QualityScan: Grade A ✓
+
+2. White Maize — Premium
+   Price: NAD 6.20/kg | Region: Oshikoto
+   Quantity: 12,000kg | Moisture: 12.5%
+   Farmer: Johannes Nghifindaka | Verified ✓
+
+3. Butternut Squash — Export Grade
+   Price: NAD 9.00/kg | Region: Khomas
+   Quantity: 3,500kg | Export Ready
+   Farmer: Magdalena Amunyela | Grade A ✓
+
+4. Tomatoes — Roma Variety
+   Price: NAD 12.50/kg | Region: Kavango East
+   Quantity: 800kg | Shelf life: 14 days
+   Farmer: Abraham Tjiramba | QualityScan: Grade A
+
+5. Onions — Brown Variety
+   Price: NAD 7.80/kg | Region: Hardap
+   Quantity: 4,200kg | Storage: 6 months
+   Farmer: Pieter Swarts | Grade A
+
+6. Groundnuts — Roasting Grade
+   Price: NAD 18.50/kg | Region: Ohangwena
+   Quantity: 800kg | Moisture: 8%
+   Farmer: Maria Shipanga | Organic ✓
+
+7. Sweet Potatoes — Orange Flesh
+   Price: NAD 11.00/kg | Region: Kavango West
+   Quantity: 1,200kg | Nutrition-rich
+   Farmer: Ndapewa Mwinga | Grade A
+
+8. Watermelons — Sugar Baby
+   Price: NAD 25.00 each | Region: Hardap
+   Average weight: 6-8kg | Quantity: 400 units
+   Farmer: Gideon Isaaks | Barter Available ✓
+
+9. Green Cabbage — Large Head
+   Price: NAD 14.00 each | Region: Khomas
+   Quantity: 600 heads | Restaurant supply
+   Farmer: Frieda Kauaria | Grade A
+
+10. Baby Spinach — Washed & Packed
+    Price: NAD 35.00/kg | Region: Khomas
+    Quantity: 150kg | Hotel supply
+    Farmer: Magdalena Amunyela | Premium Grade
+
+11. Sorghum — White Chibuku Grade
+    Price: NAD 7.50/kg | Region: Oshana
+    Quantity: 8,000kg | Processing grade
+    Farmer: Festus Amupanda | Verified ✓
+
+12. Cowpeas — Dried
+    Price: NAD 22.00/kg | Region: Ohangwena
+    Quantity: 500kg | High protein
+    Farmer: Selma Nghidinwa | Organic ✓
+
+13. Pumpkin — Boer Pumpkin
+    Price: NAD 18.00 each | Region: Hardap
+    Traditional Namibian variety | 400 units
+    Farmer: Anna Tjihero | Grade B+
+
+14. Chilli Peppers — Bird's Eye
+    Price: NAD 45.00/kg | Region: Kavango East
+    Quantity: 80kg | Dried available
+    Farmer: Abraham Tjiramba | Specialty Crop
+
+15. Beans — Sugar Beans
+    Price: NAD 28.00/kg | Region: Zambezi
+    Quantity: 350kg | Protein-rich
+    Farmer: Joseph Haipinge | Grade A
+
+16. Sweet Corn — Yellow
+    Price: NAD 8.50 each (ear) | Region: Khomas
+    Quantity: 2,000 ears | Fresh market
+    Farmer: Hilma Nangolo | Grade A
+
+17. Moringa Leaves — Dried & Packed
+    Price: NAD 180.00/kg | Region: Kavango East
+    Quantity: 25kg | Superfood, export interest
+    Farmer: Ndapewa Mwinga | Organic ✓
+
+18. Garlic — Locally Grown
+    Price: NAD 95.00/kg | Region: Hardap
+    Quantity: 60kg | Import substitute
+    Farmer: Heinrich Mouton | Grade A
+
+19. Carrots — Bunched
+    Price: NAD 18.00/bunch | Region: Khomas
+    Quantity: 300 bunches | Hotel supply
+    Farmer: Magdalena Amunyela | Premium
+
+20. Green Peppers — Bell
+    Price: NAD 32.00/kg | Region: Kavango East
+    Quantity: 200kg | Restaurant grade
+    Farmer: Abraham Tjiramba | Grade A
+
+═══════════════════════════════════════════════
+SEEDS & INPUTS (10 listings)
+═══════════════════════════════════════════════
+
+1. Drought-Resistant Maize Seed — SC403
+   Price: NAD 285/5kg bag | Region: Khomas
+   Certified, treated, 105-day variety
+   Supplier: Agrinet Namibia | InputGuard Verified ✓
+
+2. Pearl Millet Seed — Okashana 2
+   Price: NAD 120/2kg | Region: Oshana
+   Namibian-developed drought variety
+   Supplier: MAWLR Certified | Verified ✓
+
+3. NPK Fertilizer 2:3:2 (22)
+   Price: NAD 890/50kg bag | Region: Khomas
+   For maize and vegetables
+   Supplier: Pupkewitz Agri | Verified ✓
+
+4. Urea 46% — Topdressing
+   Price: NAD 1,100/50kg | Region: Khomas
+   Apply at 6-leaf stage
+   Supplier: Agra Co-op | Verified ✓
+
+5. Watermelon Seeds — Charleston Grey
+   Price: NAD 85/pack (100 seeds)
+   High yield, disease resistant
+   Supplier: Seedco Namibia | Verified ✓
+
+6. Cattle Vaccine — Lumpy Skin
+   Price: NAD 450/50 dose vial
+   Cold-chain maintained, expires 2027
+   Supplier: Agra Veterinary | Verified ✓
+
+7. Tomato Seedlings — Roma F1
+   Price: NAD 3.50 each | Region: Khomas
+   4-week old, ready to transplant
+   Farmer: Magdalena Amunyela | 500 available
+
+8. Compost — Kraal Manure
+   Price: NAD 180/cubic metre
+   Region: Ohangwena | Organic certified
+   Farmer: Selma Nghidinwa | 20 cubic metres
+
+9. Drip Irrigation Kit — 1 Hectare
+   Price: NAD 8,500 complete | Region: Khomas
+   Includes pipes, emitters, filter, timer
+   Supplier: Agriway Namibia | Verified ✓
+
+10. Solar Water Pump — 0.5HP
+    Price: NAD 6,200 | Region: Khomas
+    Pumps 3,000L/day from 30m depth
+    Supplier: SolarNamibia | Verified ✓
+
+═══════════════════════════════════════════════
+FARM EQUIPMENT (10 listings)
+═══════════════════════════════════════════════
+
+1. John Deere Tractor — 5055E
+   Price: NAD 285,000 | Region: Otjozondjupa
+   Year: 2019 | Hours: 1,240
+   Condition: Excellent | Service history ✓
+   Farmer: Petrus Hamutenya
+
+2. Plough — 3 Furrow Disc
+   Price: NAD 18,500 | Region: Hardap
+   Fits 50-80HP tractor | Good condition
+   Farmer: Pieter Swarts
+
+3. Borehole Pump — Grundfos SP5
+   Price: NAD 12,800 | Region: Khomas
+   3-phase, 40m head, 5m³/hour
+   Farmer: Johannes Nghifindaka
+
+4. Maize Sheller — Manual
+   Price: NAD 2,200 | Region: Ohangwena
+   Capacity: 500kg/hour
+   Farmer: Selma Nghidinwa
+
+5. Livestock Scale — Platform
+   Price: NAD 8,500 | Region: Khomas
+   Capacity: 2,000kg | Digital display
+   Farmer: David Mwetupunga
+
+6. Water Tank — 5,000L Poly
+   Price: NAD 4,800 | Region: Erongo
+   UV-resistant, food-grade plastic
+   Farmer: Hilma Nangolo
+
+7. Wheelbarrow — Heavy Duty Farm
+   Price: NAD 850 | Region: Khomas
+   200L capacity, pneumatic tyre
+   Farmer: Frieda Kauaria | Quantity: 3
+
+8. Electric Fence Energiser — 12J
+   Price: NAD 3,200 | Region: Hardap
+   Powers 100km of fence
+   Farmer: Gideon Isaaks
+
+9. Spray Pump — 15L Knapsack
+   Price: NAD 480 | Region: Khomas
+   Stainless steel, adjustable nozzle
+   Farmer: Maria Kahumba | Quantity: 5
+
+10. Chicken Drinkers & Feeders Set
+    Price: NAD 85 per set | Region: Khomas
+    5L drinker + 5kg feeder
+    Farmer: Frieda Kauaria | Quantity: 50 sets
+
+═══════════════════════════════════════════════
+PROCESSED FARM PRODUCTS (8 listings)
+═══════════════════════════════════════════════
+
+1. Biltong — Kudu & Beef Mix
+   Price: NAD 280/kg | Region: Otjozondjupa
+   Wet or dry, vacuum packed
+   Farmer: Petrus Hamutenya | HACCP Certified
+
+2. Mahango Porridge Meal — Milled
+   Price: NAD 45/5kg bag | Region: Ohangwena
+   Stone-ground, no additives
+   Farmer: Selma Nghidinwa | Organic
+
+3. Raw Honey — Bush Harvest
+   Price: NAD 120/500g jar | Region: Kavango East
+   Unfiltered, wild flower honey
+   Farmer: Abraham Tjiramba | 60 jars
+
+4. Moringa Powder — Export Pack
+   Price: NAD 350/250g | Region: Kavango East
+   Organic certified, EU export grade
+   Farmer: Ndapewa Mwinga | 30 packs
+
+5. Dried Fish — Kapenta
+   Price: NAD 95/kg | Region: Zambezi
+   Sun-dried, no preservatives
+   Farmer: Joseph Haipinge | 200kg
+
+6. Goat Milk Soap — Handmade
+   Price: NAD 65 per bar | Region: Hardap
+   Lavender & oatmeal variety
+   Farmer: Grietjie Mouton | 120 bars
+
+7. Baobab Fruit Powder
+   Price: NAD 280/kg | Region: Kavango West
+   Rich in Vitamin C, export ready
+   Farmer: Ndapewa Mwinga | 15kg
+
+8. Chilli Sauce — Kavango Fire
+   Price: NAD 85/300ml bottle
+   Region: Kavango East | Artisan made
+   Farmer: Abraham Tjiramba | 80 bottles
+
+═══════════════════════════════════════════════
+DISPLAY INSTRUCTIONS
+═══════════════════════════════════════════════
+
+1. Each listing card must show:
+   - AgriPlaceholder with correct type (livestock/crop/equipment etc)
+   - Product name and price in NAD (bold green)
+   - Region chip with 📍 pin icon
+   - Verified Seller badge where applicable ✓
+   - Quality Grade badge (A/B/B+) in top left corner
+   - Quantity available
+   - Farmer name
+   - Special badges where relevant:
+     🌿 Organic | 🌍 Export Ready | 🔄 Barter Available | ⭐ Featured
+
+2. On the Marketplace page, add category filter tabs 
+   at the top (horizontal scrollable pills):
+   All | 🐄 Cattle | 🐐 Goats | 🐑 Sheep | 🐔 Poultry | 
+   🌾 Crops | 🥬 Vegetables | 🌱 Seeds & Inputs | 
+   🚜 Equipment | 🥩 Processed
+
+3. Clicking a category tab filters the listings 
+   to show only that category instantly (client-side filter,
+   no page reload needed).
+
+4. Add a listing count badge next to each tab:
+   e.g. "🐄 Cattle (20)" showing how many listings exist.
+
+5. Default sort: Featured first, then newest.
+
+6. Add a "Load More" button at the bottom of the grid
+   that loads the next 9 listings (pagination, 9 per page).

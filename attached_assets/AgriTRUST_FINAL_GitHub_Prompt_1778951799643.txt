@@ -1,0 +1,743 @@
+Do all of the following in one go. This is the final
+GitHub push for the AgriTRUST platform:
+
+═══════════════════════════════════════════════
+STEP 1 — CLEAN ALL REPLIT REFERENCES
+═══════════════════════════════════════════════
+
+Before pushing, remove every trace of Replit
+from the entire codebase.
+
+DELETE these files completely if they exist:
+- .replit
+- replit.nix
+- .replit.nix
+- replit.toml
+- .breakpoints
+- .config/
+- .upm/
+- any file with "replit" in the filename
+
+SEARCH AND REPLACE in every file:
+"replit"       → remove
+"Replit"       → remove
+"REPLIT"       → remove
+"repl.it"      → remove
+"repl.co"      → remove
+".repl.co"     → replace with ".agritrust.com"
+"REPL_ID"      → remove
+"REPL_SLUG"    → remove
+"REPL_OWNER"   → remove
+"REPLIT_DB_URL"→ rename to DATABASE_URL
+
+DATABASE CONNECTION:
+In every database config file replace any
+Replit-specific connection string with:
+const DATABASE_URL = process.env.DATABASE_URL;
+
+PACKAGE.JSON (root, client, server):
+Remove any Replit-specific scripts or config.
+Keep only these standard scripts:
+"dev", "build", "start", "seed", "test"
+
+.env.example:
+Replace all Replit variables with:
+DATABASE_URL=postgresql://username:password@host:5432/agritrust
+JWT_SECRET=your-secret-key-minimum-32-characters
+PORT=3001
+CLIENT_PORT=3000
+NODE_ENV=development
+VITE_API_URL=http://localhost:3001
+
+Run this scan to confirm nothing remains:
+grep -r "replit\|repl\.it\|repl\.co\|REPL_ID\|REPL_SLUG" \
+  --include="*.js" --include="*.jsx" \
+  --include="*.ts" --include="*.tsx" \
+  --include="*.json" --include="*.md" \
+  --include="*.env*" --include="*.toml" \
+  --include="*.nix" . 2>/dev/null
+
+Fix every result before continuing to Step 2.
+
+═══════════════════════════════════════════════
+STEP 2 — RESTRUCTURE INTO WEB AND APP FOLDERS
+═══════════════════════════════════════════════
+
+Reorganise the entire project into this exact
+folder structure:
+
+agritrust-platform/
+├── web/
+│   ├── client/
+│   │   ├── src/
+│   │   │   ├── components/
+│   │   │   ├── pages/
+│   │   │   ├── context/
+│   │   │   ├── hooks/
+│   │   │   ├── services/
+│   │   │   ├── utils/
+│   │   │   └── data/
+│   │   ├── public/
+│   │   │   └── assets/
+│   │   ├── index.html
+│   │   ├── vite.config.js
+│   │   ├── tailwind.config.js
+│   │   ├── postcss.config.js
+│   │   └── package.json
+│   ├── server/
+│   │   ├── routes/
+│   │   ├── controllers/
+│   │   ├── middleware/
+│   │   ├── prisma/
+│   │   │   └── schema.prisma
+│   │   └── seed/
+│   │       └── seed.js
+│   ├── .env.example
+│   ├── package.json
+│   └── README.md
+│
+├── app/
+│   ├── src/
+│   │   ├── components/
+│   │   ├── screens/
+│   │   │   ├── Auth/
+│   │   │   │   ├── LoginScreen.js
+│   │   │   │   └── RegisterScreen.js
+│   │   │   ├── Dashboard/
+│   │   │   │   └── DashboardScreen.js
+│   │   │   ├── Marketplace/
+│   │   │   │   └── MarketplaceScreen.js
+│   │   │   ├── LandShare/
+│   │   │   │   └── LandShareScreen.js
+│   │   │   ├── QualityScan/
+│   │   │   │   └── QualityScanScreen.js
+│   │   │   ├── HarvestFinance/
+│   │   │   │   └── HarvestFinanceScreen.js
+│   │   │   ├── Community/
+│   │   │   │   └── CommunityScreen.js
+│   │   │   └── Profile/
+│   │   │       └── ProfileScreen.js
+│   │   ├── navigation/
+│   │   │   └── AppNavigator.js
+│   │   ├── services/
+│   │   │   └── api.js
+│   │   ├── context/
+│   │   │   └── AuthContext.js
+│   │   └── utils/
+│   │       └── helpers.js
+│   ├── assets/
+│   │   └── agritrust-logo.png
+│   ├── App.js
+│   ├── app.json
+│   ├── babel.config.js
+│   ├── package.json
+│   └── README.md
+│
+├── .gitignore
+├── LICENSE
+├── NOTICE
+└── README.md
+
+The app/ folder is a React Native Expo scaffold.
+It must have correct imports, navigation setup,
+and screen placeholders connected to the same
+backend API as the web platform.
+
+═══════════════════════════════════════════════
+STEP 3 — CREATE ROOT README.md
+═══════════════════════════════════════════════
+
+Create README.md at the root. Do NOT mention
+Replit anywhere in this file:
+
+---
+# AgriTRUST Platform
+
+> From farm to market, from soil to future.
+
+[![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
+[![Platform](https://img.shields.io/badge/Platform-Web%20%2B%20Mobile-green.svg)]()
+[![Status](https://img.shields.io/badge/Status-Prototype-orange.svg)]()
+
+AgriTRUST is a global agricultural technology
+platform powered by AI, blockchain, secure payments,
+harvest finance, barter exchange, LandShare, smart
+negotiation, QualityScan, farmer protection, ethical
+AI, mentorship, and green economy innovation.
+
+Built for farmers, landowners, buyers, exporters,
+cooperatives, and communities across Southern Africa.
+
+---
+
+## Repository Structure
+
+| Folder | Description |
+|--------|-------------|
+| `web/` | Full-stack web platform (React + Node.js) |
+| `app/` | Mobile application (React Native + Expo) |
+
+---
+
+## Platform Pillars (26)
+
+| # | Pillar | Description |
+|---|--------|-------------|
+| 1 | Marketplace | Buy and sell livestock, crops, equipment |
+| 2 | Harvest Finance | Low-interest loans repaid through harvest |
+| 3 | LandShare | Lease unused land to verified farmers |
+| 4 | Barter Exchange | Trade goods and services without cash |
+| 5 | DealWise | AI-powered negotiation assistant |
+| 6 | QualityScan | AI harvest quality verification |
+| 7 | InputGuard | Detect fake seeds and farm inputs |
+| 8 | AgriTRUST Protect | Insurance and disaster recovery |
+| 9 | SafeTrade | Dispute resolution centre |
+| 10 | Farm Accounting | Simple farm P&L tracking |
+| 11 | FarmScore | Farm readiness and credit score |
+| 12 | Market Stabilizer | Redirect surplus harvests |
+| 13 | Mentorship Network | Farmer-to-farmer knowledge transfer |
+| 14 | Co-op Treasury | Cooperative fund management |
+| 15 | Climate Credits | Track biodiversity and carbon actions |
+| 16 | AgriHaul | Transport and logistics booking |
+| 17 | AgriEnergy | Renewable energy marketplace |
+| 18 | AgriSave | Bookmarks and saved items |
+| 19 | AgriVoice | Voice-first AI in local languages |
+| 20 | AgriLive | Live video marketplace and auctions |
+| 21 | AgriPredict | AI harvest and income forecasting |
+| 22 | Smart Contracts | Automated agricultural agreements |
+| 23 | AgriID | Portable digital farmer identity |
+| 24 | AgriWatch | Community theft prevention network |
+| 25 | AgriData | Ethical agricultural data intelligence |
+| 26 | Academy | Agricultural courses and certificates |
+
+---
+
+## Launch Markets
+
+| Country | Status |
+|---------|--------|
+| 🇳🇦 Namibia | Primary launch market |
+| 🇧🇼 Botswana | Phase 1 expansion |
+| 🇿🇦 South Africa | Phase 1 expansion |
+| 🇿🇲 Zambia | Phase 1 expansion |
+| 🇿🇼 Zimbabwe | Phase 1 expansion |
+
+---
+
+## Leadership
+
+| Name | Role |
+|------|------|
+| Loide Dawid | Chief Executive Officer & Co-Founder |
+| Paulus Indongo | Chief Technology Officer & Co-Founder |
+
+---
+
+## Tech Stack
+
+### Web Platform
+- Frontend: React 18, Vite, TailwindCSS
+- Backend: Node.js, Express.js
+- Database: PostgreSQL + Prisma ORM
+- Auth: JWT
+- Real-time: Socket.io
+
+### Mobile App
+- React Native with Expo
+- React Navigation v6
+- Shared backend API
+
+---
+
+## Prototype Data
+
+| Entity | Count |
+|--------|-------|
+| Users | 88 (across 18 roles) |
+| Listings | 180 |
+| Transactions | 200 |
+| Barter Offers | 45 |
+| Land Listings | 22 |
+| Harvest Loans | 15 |
+| Reviews | 160 |
+| Community Posts | 40 |
+| Impact Records | 88 |
+| Courses | 60 |
+
+---
+
+## Quick Start
+
+- [Web Platform Setup →](./web/README.md)
+- [Mobile App Setup →](./app/README.md)
+
+---
+
+## License
+
+Licensed under the GNU Affero General Public
+License v3.0 (AGPLv3).
+See [LICENSE](./LICENSE) for full details.
+
+✅ Free to use, study, modify, and distribute
+✅ Modifications must be shared under AGPLv3
+❌ Cannot be made proprietary or closed-source
+
+---
+
+## Contact
+
+Website: https://agritrusthub.com
+Email: hello@agritrust.com
+
+> AgriTRUST — Agriculture with trust at its roots.
+---
+
+═══════════════════════════════════════════════
+STEP 4 — CREATE web/README.md
+═══════════════════════════════════════════════
+
+Create web/README.md. Do NOT mention Replit:
+
+---
+# AgriTRUST — Web Platform
+
+Full-stack web application for the AgriTRUST
+agricultural technology platform.
+
+---
+
+## Tech Stack
+
+### Frontend
+- React 18 with Vite
+- TailwindCSS (dark mode supported)
+- React Router v6
+- Recharts (data visualizations)
+- Lucide React (icons)
+- Axios + React Query
+
+### Backend
+- Node.js with Express.js
+- PostgreSQL
+- Prisma ORM
+- JWT Authentication
+- Socket.io (real-time features)
+- Multer (file uploads)
+
+---
+
+## Getting Started
+
+### Prerequisites
+- Node.js 18+
+- PostgreSQL 14+
+- npm or yarn
+
+### Installation
+
+# Clone the repository
+git clone https://github.com/AgriTRUSTHUB/agritrust-platform.git
+cd agritrust-platform/web
+
+# Install all dependencies
+npm install
+
+# Set up environment variables
+cp .env.example .env
+# Edit .env with your database credentials
+
+# Set up the database
+npx prisma migrate dev --name init
+npx prisma generate
+
+# Seed the database (88 users, under 30 seconds)
+node server/seed/seed.js
+
+# Reset and reseed if needed
+node server/seed/seed.js --reset
+
+# Start development
+npm run dev
+
+---
+
+## Available Scripts
+
+| Command | Description |
+|---------|-------------|
+| npm run dev | Start client and server together |
+| npm run client | Frontend only (port 3000) |
+| npm run server | Backend only (port 3001) |
+| npm run build | Build frontend for production |
+| npm run seed | Seed database |
+| npm run seed:reset | Wipe and reseed |
+
+---
+
+## Environment Variables
+
+| Variable | Description |
+|----------|-------------|
+| DATABASE_URL | PostgreSQL connection string |
+| JWT_SECRET | Secret key (min 32 characters) |
+| PORT | Backend port (default 3001) |
+| CLIENT_PORT | Frontend port (default 3000) |
+| NODE_ENV | development or production |
+
+---
+
+## Project Structure
+
+web/
+├── client/
+│   ├── src/
+│   │   ├── components/    Reusable UI components
+│   │   ├── pages/         One file per route
+│   │   ├── context/       Auth and Theme context
+│   │   ├── hooks/         Custom React hooks
+│   │   ├── services/      API service functions
+│   │   ├── utils/         Helper functions
+│   │   └── data/          Static constants
+│   └── public/
+│       └── assets/        Logo, video, images
+└── server/
+    ├── routes/            API route handlers
+    ├── controllers/       Business logic
+    ├── middleware/        Auth and validation
+    ├── prisma/            Database schema
+    └── seed/              Seed script
+
+---
+
+## Key API Endpoints
+
+### Auth
+POST   /api/auth/register
+POST   /api/auth/login
+GET    /api/auth/me
+
+### Marketplace
+GET    /api/listings
+POST   /api/listings
+GET    /api/listings/:id
+
+### LandShare
+GET    /api/landshare
+POST   /api/landshare
+POST   /api/landshare/:id/apply
+
+### Harvest Finance
+GET    /api/finance/products
+POST   /api/finance/apply
+
+### DealWise
+POST   /api/dealwise/suggest
+POST   /api/dealwise/agreements
+
+### QualityScan
+POST   /api/qualityscan/scan
+GET    /api/qualityscan/reports
+
+### Platform Stats
+GET    /api/stats/platform
+
+---
+
+## Design System
+
+| Token | Value |
+|-------|-------|
+| Primary green | #1A6B3A |
+| Amber accent | #F5A623 |
+| Trust blue | #2196F3 |
+| Light background | #F8FAF5 |
+| Dark background | #0F1F15 |
+| UI font | DM Sans |
+| Heading font | Playfair Display |
+
+Dark mode: fully supported via Tailwind class
+strategy. Persists to localStorage.
+---
+
+═══════════════════════════════════════════════
+STEP 5 — CREATE app/README.md
+═══════════════════════════════════════════════
+
+Create app/README.md. Do NOT mention Replit:
+
+---
+# AgriTRUST — Mobile Application
+
+React Native mobile app for the AgriTRUST
+agricultural technology platform.
+Built with Expo for iOS and Android.
+
+---
+
+## Status: In Development
+
+The mobile app scaffold is fully structured
+and ready for development. Full feature parity
+with the web platform is planned for Phase 2.
+
+The backend in web/server/ serves both the
+web platform and this mobile app.
+
+---
+
+## Tech Stack
+
+- React Native (Expo)
+- React Navigation v6
+- Axios (API calls)
+- AsyncStorage (local storage)
+- Expo Camera (QualityScan)
+- Expo Location (geolocation)
+- Expo Notifications (push alerts)
+
+---
+
+## Getting Started
+
+### Prerequisites
+- Node.js 18+
+- Expo CLI: npm install -g expo-cli
+- Expo Go app on your phone, or
+- iOS Simulator / Android Emulator
+
+### Run the app
+
+cd agritrust-platform/app
+npm install
+npx expo start
+
+Scan the QR code with Expo Go, or press:
+i → iOS simulator
+a → Android emulator
+
+---
+
+## Screen Structure
+
+app/src/screens/
+├── Auth/
+│   ├── LoginScreen.js
+│   └── RegisterScreen.js
+├── Dashboard/
+│   └── DashboardScreen.js
+├── Marketplace/
+│   └── MarketplaceScreen.js
+├── LandShare/
+│   └── LandShareScreen.js
+├── QualityScan/
+│   └── QualityScanScreen.js
+├── HarvestFinance/
+│   └── HarvestFinanceScreen.js
+├── Community/
+│   └── CommunityScreen.js
+└── Profile/
+    └── ProfileScreen.js
+
+---
+
+## API Connection
+
+Update the base URL in src/services/api.js:
+
+const BASE_URL = "https://api.agritrust.com";
+// Local development:
+// const BASE_URL = "http://localhost:3001";
+
+---
+
+## Planned Mobile Features
+
+- AgriVoice: voice commands in local languages
+- QualityScan: camera-based crop quality scan
+- AgriWatch: push alerts for nearby theft
+- Offline mode: browse cached listings
+- USSD bridge: feature phone access to platform
+---
+
+═══════════════════════════════════════════════
+STEP 6 — CREATE .gitignore
+═══════════════════════════════════════════════
+
+Create .gitignore at the root:
+
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Environment variables — never commit
+.env
+**/.env
+.env.local
+.env.production
+
+# Build outputs
+dist/
+build/
+out/
+
+# Database
+*.db
+*.sqlite
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+*.swp
+
+# Editor
+.vscode/settings.json
+.idea/
+
+# Uploads
+web/server/uploads/
+app/uploads/
+
+# Prisma
+web/server/prisma/migrations/dev.db
+
+# Expo
+app/.expo/
+app/dist/
+app/web-build/
+
+# Coverage
+coverage/
+*.lcov
+
+# TypeScript
+*.tsbuildinfo
+
+═══════════════════════════════════════════════
+STEP 7 — CREATE LICENSE FILE (AGPLv3)
+═══════════════════════════════════════════════
+
+Create LICENSE at the root:
+
+                    GNU AFFERO GENERAL PUBLIC LICENSE
+                       Version 3, 19 November 2007
+
+ Copyright (C) 2026 AgriTRUST
+ Loide Dawid (CEO) & Paulus Indongo (CTO)
+ https://agritrusthub.com
+
+ This program is free software: you can
+ redistribute it and/or modify it under the
+ terms of the GNU Affero General Public License
+ as published by the Free Software Foundation,
+ either version 3 of the License, or (at your
+ option) any later version.
+
+ This program is distributed in the hope that
+ it will be useful, but WITHOUT ANY WARRANTY;
+ without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ PURPOSE. See the GNU Affero General Public
+ License for more details.
+
+ You should have received a copy of the GNU
+ Affero General Public License along with this
+ program. If not, see:
+ https://www.gnu.org/licenses/agpl-3.0.en.html
+
+ What this license means:
+ ✅ Free to use, study, modify, distribute
+ ✅ Must share modifications under AGPLv3
+ ✅ Network/web use counts as distribution
+ ❌ Cannot make proprietary closed-source forks
+
+═══════════════════════════════════════════════
+STEP 8 — CREATE NOTICE FILE
+═══════════════════════════════════════════════
+
+Create NOTICE at the root:
+
+NOTICE
+
+AgriTRUST Platform
+Copyright (C) 2026 AgriTRUST
+
+CEO: Loide Dawid
+CTO: Paulus Indongo
+
+This software is free and open source, licensed
+under the GNU Affero General Public License v3.0.
+
+AgriTRUST is an agricultural technology platform
+built for farmers, landowners, buyers, and
+communities across Southern Africa.
+
+"From farm to market, from soil to future."
+
+https://agritrusthub.com
+hello@agritrust.com
+
+═══════════════════════════════════════════════
+STEP 9 — PUSH TO GITHUB
+═══════════════════════════════════════════════
+
+Run these git commands in exact order:
+
+git init
+git config user.name "AgriTRUST"
+git config user.email "dev@agritrust.com"
+git add .
+git commit -m "feat: AgriTRUST v1.0 — Full platform prototype
+
+Web: React 18 + Node.js + PostgreSQL + Prisma
+App: React Native + Expo scaffold
+Seed: 88 users, 18 roles, 14 Namibia regions
+License: GNU AGPLv3 open source
+CEO: Loide Dawid | CTO: Paulus Indongo"
+
+git branch -M main
+git remote add origin https://github.com/AgriTRUSTHUB/agritrust-platform.git
+git push -u origin main
+git checkout -b develop
+git push -u origin develop
+git checkout main
+git tag -a v1.0.0-prototype -m "AgriTRUST v1.0 Prototype — web + app"
+git push origin --tags
+
+═══════════════════════════════════════════════
+STEP 10 — FINAL VERIFICATION
+═══════════════════════════════════════════════
+
+After pushing confirm all of these are true:
+
+✓ github.com/AgriTRUSTHUB/agritrust-platform
+  shows web/ and app/ at the root level
+✓ README.md renders on the repo homepage
+✓ web/README.md exists
+✓ app/README.md exists
+✓ LICENSE file is present (AGPLv3)
+✓ NOTICE file is present
+✓ .gitignore is present
+✓ Two branches exist: main and develop
+✓ Tag v1.0.0-prototype exists
+✓ No Replit references anywhere in the code
+✓ No .replit or replit.nix files in the repo
+✓ No node_modules committed
+✓ No .env files committed
+✓ web/ and app/ folders clearly separated
+✓ All README files professional and complete
+✓ Database uses only DATABASE_URL variable
+✓ package.json scripts are clean and standard
+
+If anything fails the checklist, fix it and
+run: git add . && git commit -m "fix: cleanup"
+then: git push origin main
+
+The repository must look completely professional
+as if built independently by the AgriTRUST
+engineering team from day one.

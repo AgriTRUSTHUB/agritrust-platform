@@ -1,0 +1,624 @@
+Update the AgriTRUST Marketplace page with the following changes:
+
+---
+
+## 1. IMAGE GENERATION — USE REPLIT'S BUILT-IN FLUX MODEL
+
+Do NOT use Unsplash, placeholder icons, or any external image API.
+
+Generate every product image using Replit's built-in Flux image 
+generation model. Each image must be photorealistic, professionally 
+composed, and match the exact product being listed.
+
+Use this prompt structure for every product:
+
+"Professional food photography of [product name], fresh, high quality, 
+natural lighting, farm setting, Namibian agricultural context, 
+clean background, commercial grade, ultra realistic"
+
+Category-specific prompt guidance:
+
+GRAINS:
+"Freshly harvested [grain name], golden tones, rustic wooden surface, 
+natural light, Namibian farm, ultra realistic, overhead shot"
+
+VEGETABLES:
+"Fresh [vegetable name], vibrant colour, morning light, farm crate 
+or market setting, Namibian produce, ultra realistic, commercial grade"
+
+FRUIT:
+"Ripe [fruit name], vivid natural colours, outdoor farm setting, 
+Namibia, natural sunlight, ultra realistic, professional food photography"
+
+LIVESTOCK:
+"Healthy [breed and animal], standing in dry Namibian savanna or 
+kraal, golden hour lighting, ultra realistic, commercial farm photography"
+
+DAIRY AND EGGS:
+"Fresh [product name], clean rustic surface, natural warm light, 
+farm aesthetic, ultra realistic, professional food photography"
+
+HONEY AND ORGANIC:
+"[Product name] in glass jar or natural container, warm golden light, 
+wooden surface, organic farm aesthetic, Namibian context, ultra realistic"
+
+INPUTS AND SUPPLIES:
+"[Product name] in farm setting, practical and clean composition, 
+natural light, agricultural context, ultra realistic"
+
+PROCESSED PRODUCTS:
+"[Product name], artisan packaging or rustic presentation, warm light, 
+wooden or farm surface, Namibian artisan food, ultra realistic"
+
+LANDSHARE AND ENERGY:
+"Aerial or wide-angle view of [land type or solar equipment] in 
+Namibian landscape, golden light, ultra realistic, documentary style"
+
+Image technical requirements:
+- Display size: 400 x 250px per card
+- object-fit: cover so it fills the card area cleanly
+- Subtle dark gradient overlay on the bottom 30% of every image 
+  so badges and text remain readable
+- Skeleton loading placeholder shown while each image generates
+- Generate all images at build time or on first load only
+- Store all generated image URLs in state so images persist 
+  through the session and do not regenerate on every page visit
+- Each listing gets a unique image — no duplicates across cards
+
+---
+
+## 2. ADD 100 NEW MARKETPLACE LISTINGS
+
+Add exactly 100 product listings to the marketplace data array 
+spread across the following categories:
+
+---
+
+### GRAINS (15 listings)
+
+1.  Premium White Maize — Oshikoto
+    NAD 8.50/kg | 2,500 kg available
+    Seller: Johannes Nghifinda | Oshikoto | Verified
+
+2.  Pearl Millet (Mahangu) — Kavango East
+    NAD 7.20/kg | 1,800 kg available
+    Seller: Maria Kahumba | Kavango East | Verified | Organic
+
+3.  Sorghum — Hardap
+    NAD 6.80/kg | 3,000 kg available
+    Seller: Petrus Haimbodi | Hardap | Verified
+
+4.  White Sorghum — Omaheke
+    NAD 7.00/kg | 2,200 kg available
+    Seller: Anna Tjikuua | Omaheke | Verified
+
+5.  Yellow Maize — Ohangwena
+    NAD 7.90/kg | 4,000 kg available
+    Seller: Simon Nangula | Ohangwena | Verified
+
+6.  Wheat Grain — Hardap
+    NAD 9.20/kg | 1,500 kg available
+    Seller: Dina Shihepo | Hardap | Verified
+
+7.  Barley — Khomas
+    NAD 10.50/kg | 800 kg available
+    Seller: Thomas Haufiku | Khomas | Verified
+
+8.  Sunflower Seeds — Otjozondjupa
+    NAD 12.00/kg | 900 kg available
+    Seller: Rachel Nghifikepunye | Otjozondjupa | Verified
+
+9.  Sesame Seeds — Kavango West
+    NAD 18.50/kg | 600 kg available
+    Seller: Festus Namwandi | Kavango West | Verified | Organic
+
+10. Groundnuts — Ohangwena
+    NAD 14.00/kg | 1,200 kg available
+    Seller: Elizabeth Amunyela | Ohangwena | Verified
+
+11. Cowpeas — Oshikoto
+    NAD 11.00/kg | 700 kg available
+    Seller: David Shikongo | Oshikoto | Verified
+
+12. Dry Beans — Omaheke
+    NAD 15.00/kg | 500 kg available
+    Seller: Martha Tjituka | Omaheke | Verified
+
+13. Mung Beans — Kavango East
+    NAD 16.50/kg | 400 kg available
+    Seller: Jacob Mutjavikua | Kavango East | Verified | Organic
+
+14. Soya Beans — Hardap
+    NAD 13.00/kg | 1,100 kg available
+    Seller: Frieda Tjiuezuua | Hardap | Verified
+
+15. Finger Millet — Kavango West
+    NAD 9.80/kg | 850 kg available
+    Seller: Andreas Kamati | Kavango West | Verified
+
+---
+
+### VEGETABLES (20 listings)
+
+16. Organic Mixed Vegetables Box — Khomas
+    NAD 145.00/box | 50 boxes available
+    Seller: Maria Kahumba | Khomas | Verified | Organic
+
+17. Tomatoes Grade A — Hardap
+    NAD 18.00/kg | 800 kg available
+    Seller: Jan Botha | Hardap | Verified
+
+18. Baby Tomatoes — Khomas
+    NAD 32.00/kg | 200 kg available
+    Seller: Sarah Jacobs | Khomas | Verified | Organic
+
+19. Red Onions — Omaheke
+    NAD 12.50/kg | 2,000 kg available
+    Seller: Gottlieb Uarivi | Omaheke | Verified
+
+20. Brown Onions — Hardap
+    NAD 10.00/kg | 3,500 kg available
+    Seller: Nelago Shikongo | Hardap | Verified
+
+21. Potatoes — Hardap
+    NAD 9.50/kg | 5,000 kg available
+    Seller: Piet Coetzee | Hardap | Verified
+
+22. Sweet Potatoes — Kavango East
+    NAD 11.00/kg | 1,500 kg available
+    Seller: Ndapewa Hauwanga | Kavango East | Verified | Organic
+
+23. Butternut Squash — Karas
+    NAD 8.00/kg | 2,800 kg available
+    Seller: Annelene Du Plessis | Karas | Verified
+
+24. Pumpkin — Oshana
+    NAD 6.50/kg | 1,800 kg available
+    Seller: Paulina Nangombe | Oshana | Verified
+
+25. Cabbage — Khomas
+    NAD 15.00/head | 300 heads available
+    Seller: Jacobus Swartz | Khomas | Verified
+
+26. Spinach Bunches — Khomas
+    NAD 12.00/bunch | 500 bunches available
+    Seller: Grace Shaanika | Khomas | Verified | Organic
+
+27. Kale — Khomas
+    NAD 14.00/bunch | 200 bunches available
+    Seller: Titus Nghikembua | Khomas | Verified | Organic
+
+28. Swiss Chard — Khomas
+    NAD 10.00/bunch | 350 bunches available
+    Seller: Loini Hamunyela | Khomas | Verified
+
+29. Green Peppers — Hardap
+    NAD 22.00/kg | 400 kg available
+    Seller: Hendrik Swanepoel | Hardap | Verified
+
+30. Red Peppers — Hardap
+    NAD 28.00/kg | 250 kg available
+    Seller: Suzan Nambahu | Hardap | Verified
+
+31. Chilli Peppers — Oshana
+    NAD 35.00/kg | 150 kg available
+    Seller: Victor Mwandingi | Oshana | Verified
+
+32. Garlic — Hardap
+    NAD 45.00/kg | 300 kg available
+    Seller: Rosalia Kakuva | Hardap | Verified | Organic
+
+33. Carrots — Hardap
+    NAD 13.00/kg | 1,200 kg available
+    Seller: Bernhard Diergaardt | Hardap | Verified
+
+34. Beetroot — Khomas
+    NAD 16.00/kg | 600 kg available
+    Seller: Emilia Amunime | Khomas | Verified
+
+35. Broccoli — Khomas
+    NAD 28.00/kg | 180 kg available
+    Seller: Selma Ilonga | Khomas | Verified | Organic
+
+---
+
+### FRUIT (10 listings)
+
+36. Watermelon — Hardap
+    NAD 22.00/unit | 500 units available
+    Seller: Danie Visser | Hardap | Verified
+
+37. Cantaloupe Melon — Hardap
+    NAD 35.00/unit | 200 units available
+    Seller: Frieda Beukes | Hardap | Verified
+
+38. Mangoes — Kavango East
+    NAD 8.00/kg | 2,000 kg available
+    Seller: Alfons Simasiku | Kavango East | Verified
+
+39. Guavas — Zambezi
+    NAD 12.00/kg | 800 kg available
+    Seller: Josephine Mwiya | Zambezi | Verified | Organic
+
+40. Papaya — Oshana
+    NAD 15.00/unit | 400 units available
+    Seller: Fredrick Nghipangelwa | Oshana | Verified
+
+41. Bananas — Kavango East
+    NAD 18.00/bunch | 300 bunches available
+    Seller: Adelaide Kavekotora | Kavango East | Verified
+
+42. Lemons — Hardap
+    NAD 20.00/kg | 600 kg available
+    Seller: Pieter Liebenberg | Hardap | Verified
+
+43. Marula Fruit — Otjozondjupa
+    NAD 25.00/kg | 400 kg available
+    Seller: Veronica Tjiueza | Otjozondjupa | Verified | Organic
+
+44. Wild Figs — Kavango West
+    NAD 30.00/kg | 200 kg available
+    Seller: Gottfried Kavari | Kavango West | Verified | Organic
+
+45. Dates — Karas
+    NAD 55.00/kg | 150 kg available
+    Seller: Johanna Witbooi | Karas | Verified
+
+---
+
+### LIVESTOCK (20 listings)
+
+46. Brahman Bull — Otjozondjupa
+    NAD 18,500/head | 3 available
+    Seller: Samuel Tjirare | Otjozondjupa | Verified
+
+47. Afrikaner Breeding Cow — Omaheke
+    NAD 12,000/head | 8 available
+    Seller: Pieter Van Zyl | Omaheke | Verified
+
+48. Boer Goats Wethers — Hardap
+    NAD 1,800/head | 25 available
+    Seller: Gert Kooper | Hardap | Verified
+
+49. Damara Goats — Kunene
+    NAD 1,500/head | 40 available
+    Seller: Titus Uahuuwa | Kunene | Verified
+
+50. Dorper Sheep — Karas
+    NAD 2,200/head | 15 available
+    Seller: Louisa Beukes | Karas | Verified
+
+51. Karakul Sheep — Karas
+    NAD 1,950/head | 20 available
+    Seller: Abraham Swartz | Karas | Verified
+
+52. Nguni Cattle Mixed — Omaheke
+    NAD 9,800/head | 12 available
+    Seller: Elias Katjimune | Omaheke | Verified
+
+53. Simmentaler Hereford Cross — Otjozondjupa
+    NAD 14,200/head | 6 available
+    Seller: Roelf Cronje | Otjozondjupa | Verified
+
+54. Village Chickens Layers — Oshana
+    NAD 85/bird | 200 available
+    Seller: Hileni Nghifikepunye | Oshana | Verified
+
+55. Broiler Chickens Live — Khomas
+    NAD 120/bird | 500 available
+    Seller: Thomas Angula | Khomas | Verified
+
+56. Turkeys — Khomas
+    NAD 350/bird | 50 available
+    Seller: Magda Van Niekerk | Khomas | Verified
+
+57. Muscovy Ducks — Kavango East
+    NAD 150/bird | 80 available
+    Seller: Tobias Mwandingi | Kavango East | Verified
+
+58. Pigs Weaners — Hardap
+    NAD 1,200/head | 30 available
+    Seller: Kobus Louw | Hardap | Verified
+
+59. Breeding Sow — Hardap
+    NAD 4,500/head | 5 available
+    Seller: Christo Beukes | Hardap | Verified
+
+60. Tilapia Fish Live — Kavango East
+    NAD 45/kg | 500 kg available
+    Seller: Petrus Munyukwa | Kavango East | Verified
+
+61. Catfish Live — Zambezi
+    NAD 52/kg | 300 kg available
+    Seller: Solomon Simasiku | Zambezi | Verified
+
+62. Rabbits Breeding Pairs — Khomas
+    NAD 280/pair | 25 pairs available
+    Seller: Ester Hamunyela | Khomas | Verified
+
+63. Angora Goats — Karas
+    NAD 2,800/head | 10 available
+    Seller: Dirk Visser | Karas | Verified
+
+64. Watusi Cattle — Kunene
+    NAD 22,000/head | 4 available
+    Seller: Uatjiua Tjirare | Kunene | Verified
+
+65. Ostrich Slaughter Age — Hardap
+    NAD 3,500/bird | 12 available
+    Seller: Leon Joubert | Hardap | Verified
+
+---
+
+### DAIRY AND EGGS (5 listings)
+
+66. Fresh Farm Eggs Trays — Khomas
+    NAD 65/tray | 200 trays available
+    Seller: Grace Shaanika | Khomas | Verified
+
+67. Pasteurised Goat Milk — Hardap
+    NAD 35/litre | 150 litres per week
+    Seller: Hannelie Beukes | Hardap | Verified | Organic
+
+68. Cultured Amasi Fermented Milk — Oshana
+    NAD 28/litre | 300 litres available
+    Seller: Hileni Nangombe | Oshana | Verified
+
+69. Butter Farm Made — Khomas
+    NAD 95/250g | 80 units available
+    Seller: Emilia Swartz | Khomas | Verified
+
+70. Fresh Cow Milk — Otjozondjupa
+    NAD 18/litre | 500 litres per week
+    Seller: Andries Du Toit | Otjozondjupa | Verified
+
+---
+
+### HONEY AND ORGANIC (5 listings)
+
+71. Raw Wild Honey — Kavango East
+    NAD 120/kg | 200 kg available
+    Seller: Ndapewa Mushasho | Kavango East | Verified | Organic
+
+72. Marula Oil — Otjozondjupa
+    NAD 280/250ml | 60 units available
+    Seller: Veronica Tjikuua | Otjozondjupa | Verified | Organic
+
+73. Moringa Powder — Oshana
+    NAD 95/kg | 150 kg available
+    Seller: Saima Amunyela | Oshana | Verified | Organic
+
+74. Baobab Powder — Otjozondjupa
+    NAD 110/kg | 120 kg available
+    Seller: Petrus Kamuhanga | Otjozondjupa | Verified | Organic
+
+75. Aloe Vera Gel Farm Pressed — Hardap
+    NAD 85/litre | 100 litres available
+    Seller: Suzel Diergaardt | Hardap | Verified | Organic
+
+---
+
+### INPUTS AND SUPPLIES (10 listings)
+
+76. Compost Bulk Bags — Khomas
+    NAD 45/bag | 500 bags available
+    Seller: Thomas Nghifikepunye | Khomas | Verified | Organic
+
+77. Kraal Manure — Omaheke
+    NAD 30/bag | 800 bags available
+    Seller: Elias Kazarura | Omaheke | Verified
+
+78. Worm Castings — Khomas
+    NAD 75/bag | 200 bags available
+    Seller: Sarah Beukes | Khomas | Verified | Organic
+
+79. Drought-Resistant Maize Seed — Otjozondjupa
+    NAD 120/kg | 1,000 kg available
+    Seller: AgriSeed Namibia | Otjozondjupa | Verified
+
+80. Vegetable Seedling Mixed Tray — Khomas
+    NAD 85/tray | 300 trays available
+    Seller: Green Roots Nursery | Khomas | Verified
+
+81. Tomato Seedlings — Hardap
+    NAD 3.50/plant | 5,000 plants available
+    Seller: Pieter Coetzee | Hardap | Verified
+
+82. Animal Feed Layers Mash — Khomas
+    NAD 18/kg | 5,000 kg available
+    Seller: FeedMill Namibia | Khomas | Verified
+
+83. Lucerne Hay Bales — Hardap
+    NAD 95/bale | 400 bales available
+    Seller: Hardap Hay Supply | Hardap | Verified
+
+84. Maize Silage — Otjozondjupa
+    NAD 1,800/ton | 20 tons available
+    Seller: Cronje Farm | Otjozondjupa | Verified
+
+85. Organic Fertilizer Pellets — Khomas
+    NAD 65/kg | 2,000 kg available
+    Seller: NamOrganic Inputs | Khomas | Verified | Organic
+
+---
+
+### PROCESSED AND VALUE-ADDED (10 listings)
+
+86. Dried Mopane Worms — Oshana
+    NAD 180/kg | 100 kg available
+    Seller: Lahja Shikongo | Oshana | Verified
+
+87. Biltong Game Meat — Otjozondjupa
+    NAD 320/kg | 50 kg available
+    Seller: Cronje Game Farm | Otjozondjupa | Verified
+
+88. Droëwors — Otjozondjupa
+    NAD 280/kg | 40 kg available
+    Seller: Roelf Cronje | Otjozondjupa | Verified
+
+89. Mixed Fruit Jam — Kavango East
+    NAD 55/jar | 150 jars available
+    Seller: Kavango Community Kitchen | Kavango East | Verified | Organic
+
+90. Dried Mango Slices — Kavango East
+    NAD 95/kg | 80 kg available
+    Seller: Alfons Simasiku | Kavango East | Verified | Organic
+
+91. Tomato Sauce Bottled — Hardap
+    NAD 42/bottle | 200 bottles available
+    Seller: Hardap Produce Coop | Hardap | Verified
+
+92. Groundnut Paste — Ohangwena
+    NAD 68/kg | 120 kg available
+    Seller: Elizabeth Amunyela | Ohangwena | Verified | Organic
+
+93. Sun-Dried Tomatoes — Hardap
+    NAD 145/kg | 60 kg available
+    Seller: Suzan Nambahu | Hardap | Verified
+
+94. Chilli Sauce — Oshana
+    NAD 55/bottle | 250 bottles available
+    Seller: Victor Mwandingi | Oshana | Verified
+
+95. Marula Jam — Otjozondjupa
+    NAD 75/jar | 100 jars available
+    Seller: Veronica Tjiueza | Otjozondjupa | Verified | Organic
+
+---
+
+### LANDSHARE AND ENERGY (5 listings)
+
+96. LandShare — 5 Hectares Hardap
+    Harvest Share 20% | Water access, fenced
+    Seller: Danie Visser | Hardap | Verified
+
+97. LandShare — 12 Hectares Omaheke
+    Fixed Rent NAD 800/month | Suitable for cattle
+    Seller: Kazarura Family | Omaheke | Verified
+
+98. Solar Irrigation System Second-Hand — Khomas
+    NAD 8,500/unit | 1 available | 3kW pump and panels
+    Seller: Thomas Haufiku | Khomas | Verified
+
+99. Drip Irrigation Kit 1 Hectare — Hardap
+    NAD 4,200/kit | 10 kits available
+    Seller: AquaFarm Supplies | Hardap | Verified
+
+100. 5,000L Water Tank — Oshana
+     NAD 3,800/unit | 8 units available
+     Seller: Mwandingi Holdings | Oshana | Verified
+
+---
+
+## 3. CATEGORY FILTER BAR
+
+Replace the existing filter pills with these categories:
+
+All | Grains | Vegetables | Fruit | Livestock | 
+Dairy & Eggs | Honey & Organic | Inputs & Supplies | 
+Processed Foods | LandShare | Energy
+
+Behaviour:
+- Clicking a pill filters the grid instantly to show only 
+  that category
+- Active pill: dark green filled background, white text
+- Inactive pill: white background, dark green border and text
+- All pill shows the full listing count in a badge
+- Each category pill shows its own listing count in a badge
+
+---
+
+## 4. CARD DESIGN SPECIFICATION
+
+Every listing card must have:
+
+IMAGE AREA:
+- AI-generated image at top of card, 400 x 250px display size
+- object-fit: cover filling the full card width
+- Dark gradient overlay on the bottom 30% of the image
+- Skeleton shimmer placeholder while image is generating
+
+BADGES ON IMAGE:
+- "Featured" badge: orange pill, top-right corner, 
+  shown on first 6 listings only
+- "Organic" badge: green leaf icon + text, shown below 
+  the product name for all organic listings
+
+CARD BODY:
+- Product name: bold, dark, 16px
+- Region: pin icon in muted grey, 13px
+- Seller name: with blue verified tick icon next to it, 13px
+- Price: bold dark green, 18px
+- Unit: smaller grey text beside price
+- Quantity available: small muted text, right-aligned
+
+CARD FOOTER:
+- "View & Negotiate" button: full width, dark green 
+  background, white text, rounded corners
+
+CARD CONTAINER:
+- border-radius: 12px
+- box-shadow: 0 2px 12px rgba(0,0,0,0.08)
+- Hover: shadow lifts to 0 4px 24px rgba(0,0,0,0.14), 
+  image scales to 1.03 with smooth transition
+
+GRID LAYOUT:
+- Desktop: 3 columns
+- Tablet: 2 columns
+- Mobile: 1 column
+- Gap between cards: 24px
+
+---
+
+## 5. PAGINATION
+
+Show 20 listings per page.
+
+Display at the top of the grid:
+"Showing 1–20 of 103 listings"
+
+At the bottom of the grid show page number buttons:
+Previous | 1 | 2 | 3 | 4 | 5 | 6 | Next
+
+Active page number: dark green filled circle
+Inactive page numbers: grey text, no background
+
+---
+
+## 6. SEARCH BAR
+
+Make the existing search bar fully functional.
+
+As the user types, filter all listings in real time matching 
+against:
+- Product name
+- Category
+- Region or location
+- Seller name
+
+Show "No listings found for your search" with a 
+friendly illustration if no results match.
+
+Clear button (×) appears inside the search bar when 
+the user has typed something.
+
+---
+
+## 7. SORT DROPDOWN
+
+Add a sort control to the top-right of the listings area 
+next to the listing count. Options:
+
+- Newest First (default)
+- Price: Low to High
+- Price: High to Low
+- Most Available
+- Organic Only
+
+---
+
+Keep all existing navigation, sidebar, colour scheme 
+(primary dark green #1B4332, white background, orange accents 
+for Featured badges), typography, and overall layout 
+exactly as they are. Only update the marketplace 
+content area as described above.

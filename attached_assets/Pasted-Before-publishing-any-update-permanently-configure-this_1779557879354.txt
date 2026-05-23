@@ -1,0 +1,129 @@
+Before publishing any update, permanently configure 
+this project so that Replit-related files can never 
+appear in the GitHub repository again.
+
+Do all of the following:
+
+═══════════════════════════════════════════════
+1. UPDATE .gitignore PERMANENTLY
+═══════════════════════════════════════════════
+
+Open .gitignore and add these lines at the top
+under a clear heading:
+
+# ─────────────────────────────────────────────
+# REPLIT INTERNAL FILES — NEVER COMMIT TO GITHUB
+# These files are required for Replit to run
+# the app but must never appear in the repo.
+# ─────────────────────────────────────────────
+.replit
+.replit.nix
+replit.nix
+replit.md
+replit.toml
+.replitignore
+.replit.backup
+replit.backup
+*.replit
+*replit*
+.config/
+.upm/
+.cache/
+.breakpoints
+.replit_history
+
+This covers:
+- Every current Replit file
+- Every future Replit file they may create
+- Any file with "replit" anywhere in the name
+- Replit internal folders
+
+═══════════════════════════════════════════════
+2. REMOVE ALL REPLIT FILES FROM GIT TRACKING
+═══════════════════════════════════════════════
+
+Run these commands in the Shell to untrack
+any Replit files that are already being tracked:
+
+git rm --cached .replit 2>/dev/null
+git rm --cached replit.md 2>/dev/null
+git rm --cached replit.nix 2>/dev/null
+git rm --cached .replit.nix 2>/dev/null
+git rm --cached replit.toml 2>/dev/null
+git rm --cached .replitignore 2>/dev/null
+git rm --cached -r .config/ 2>/dev/null
+git rm --cached -r .upm/ 2>/dev/null
+git rm --cached -r .cache/ 2>/dev/null
+
+The 2>/dev/null means if the file does not
+exist it will not throw an error — safe to run.
+
+═══════════════════════════════════════════════
+3. ADD A PRE-COMMIT SAFETY CHECK
+═══════════════════════════════════════════════
+
+Create a file at .git/hooks/pre-commit
+with this content:
+
+#!/bin/sh
+# AgriTRUST pre-commit hook
+# Blocks any Replit files from being committed
+
+REPLIT_FILES=$(git diff --cached --name-only | grep -i "replit\|\.replit")
+
+if [ -n "$REPLIT_FILES" ]; then
+  echo ""
+  echo "─────────────────────────────────────────"
+  echo "  BLOCKED: Replit files detected"
+  echo "  These files cannot be committed:"
+  echo "$REPLIT_FILES"
+  echo ""
+  echo "  Remove them with:"
+  echo "  git rm --cached <filename>"
+  echo "─────────────────────────────────────────"
+  echo ""
+  exit 1
+fi
+
+exit 0
+
+Then make it executable:
+chmod +x .git/hooks/pre-commit
+
+This hook will automatically block any commit
+that tries to include a Replit file. It runs
+every time before a commit and throws an error
+if a Replit file is staged. This protection
+works for all future updates automatically.
+
+═══════════════════════════════════════════════
+4. COMMIT AND PUSH THE UPDATED .gitignore
+═══════════════════════════════════════════════
+
+git add .gitignore
+git commit -m "chore: permanently block Replit files from repo
+
+Added comprehensive .gitignore rules and pre-commit
+hook to ensure no Replit configuration files can
+ever be committed to the repository in any future
+update or version."
+
+git push origin main
+
+═══════════════════════════════════════════════
+5. VERIFY IT WORKED
+═══════════════════════════════════════════════
+
+Run this to confirm no Replit files are tracked:
+
+git ls-files | grep -i replit
+
+If nothing is returned — you are fully protected.
+If anything is returned — run:
+git rm --cached <filename>
+git commit -m "fix: remove remaining Replit file"
+git push origin main
+
+From this point forward no matter how many 
+updates Replit creates, no Replit file will 
+ever appear in your GitHub repository again.

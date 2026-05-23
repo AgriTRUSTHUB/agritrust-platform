@@ -1,0 +1,2034 @@
+# AgriTRUST — Full-Stack Prototype Build Prompt
+## For Use with Replit Agent + GitHub Integration
+
+---
+
+## ⚠️ IMPORTANT: HOW TO USE THIS PROMPT
+
+1. Open **Replit.com** → Create a new Repl → Choose **"Use AI Agent"**
+2. Paste **Section A** first (Project Setup). Wait for scaffold.
+3. Then paste **Section B** (Database + Seed Data). Wait for completion.
+4. Then paste **Section C** (Feature Modules) one module at a time.
+5. Push to GitHub after each major section using the Git panel in Replit.
+6. Use **Claude Code** (`claude_code_terminal`) for complex debugging between Replit sessions.
+
+> **User Count Strategy:** The seed script loads **88,000 users** into the database,
+> which powers all real features (search, feeds, marketplace, etc.). The public-facing
+> marketing banner displays **"240,000+ farmers"** — representing the addressable farmer
+> population across the initial launch markets (Namibia, Botswana, South Africa, Zambia,
+> Zimbabwe). This is standard demo-stage practice. If Replit's memory or storage is
+> constrained, run `node server/seed/seed.js --lite` to seed 25,000 users instead —
+> the app experience is identical at either size.
+
+---
+
+## SECTION A — PROJECT SETUP & ARCHITECTURE
+
+```
+Build a full-stack web application called AgriTRUST — a global agricultural 
+technology platform. Use the following tech stack:
+
+FRONTEND:
+- React 18 with Vite
+- TailwindCSS for styling
+- React Router v6 for navigation
+- Recharts for data visualizations
+- Lucide React for icons
+- Axios for API calls
+- React Query (TanStack Query) for server state
+
+BACKEND:
+- Node.js with Express.js
+- PostgreSQL database (use Replit's built-in PostgreSQL)
+- Prisma ORM for database access
+- JWT authentication (jsonwebtoken + bcrypt)
+- Multer for file uploads
+- Socket.io for real-time chat and notifications
+
+ADDITIONAL:
+- QRCode.js for QR code generation
+- Chart.js via Recharts
+- date-fns for date utilities
+- uuid for unique ID generation
+
+PROJECT STRUCTURE:
+agritrust/
+├── client/                    # React frontend
+│   ├── src/
+│   │   ├── components/        # Reusable UI components
+│   │   │   ├── ui/            # Base UI: Button, Card, Modal, Badge, etc.
+│   │   │   ├── layout/        # Navbar, Sidebar, Footer, MobileNav
+│   │   │   └── features/      # Feature-specific components
+│   │   ├── pages/             # One file per major page/route
+│   │   ├── hooks/             # Custom React hooks
+│   │   ├── context/           # Auth context, Theme context
+│   │   ├── services/          # API service functions
+│   │   ├── utils/             # Helpers, formatters
+│   │   └── data/              # Mock/seed data constants
+│   └── public/
+├── server/                    # Express backend
+│   ├── routes/                # One file per resource
+│   ├── controllers/           # Business logic
+│   ├── middleware/             # Auth, validation, error handling
+│   ├── prisma/
+│   │   └── schema.prisma      # Full DB schema
+│   └── seed/
+│       └── seed.js            # 88,000 user seed script
+├── .env.example
+├── .gitignore
+├── README.md
+└── package.json (root with workspaces)
+
+BRAND DESIGN SYSTEM:
+Primary color: #1A6B3A (deep agricultural green)
+Secondary: #F5A623 (harvest amber/gold)
+Accent: #2196F3 (trust blue)
+
+LIGHT MODE (default):
+Background: #F8FAF5
+Surface: #FFFFFF
+Text primary: #1C2B1E
+Text secondary: #6B7F6E
+Border: #E2EDE5
+Card shadow: 0 4px 24px rgba(26,107,58,0.10)
+
+DARK MODE:
+Background: #0F1F15
+Surface: #162A1C
+Text primary: #E8F5EC
+Text secondary: #8FAF97
+Border: #2A3D2E
+Card shadow: 0 4px 24px rgba(0,0,0,0.35)
+Navbar dark: #0A1710
+Sidebar dark: #111E16
+
+Font: 'DM Sans' for UI, 'Playfair Display' for headings
+Border radius: 12px (cards), 8px (buttons), 24px (pills)
+
+LOGO:
+The official AgriTRUST logo file is at: client/public/assets/agritrust-logo.png
+Copy the uploaded logo into this path on project init.
+The logo is a three-leaf design: dark green center leaf, light green left leaf,
+gold/amber right leaf, with "AgriTRUST" wordmark below in dark green.
+
+Logo usage rules:
+- On light backgrounds: use full color logo (dark green + amber)
+- On dark backgrounds: use the logo with white wordmark variant
+  (create client/public/assets/agritrust-logo-white.png — same icon,
+  but the "AgriTRUST" text rendered in #E8F5EC instead of dark green)
+- Navbar logo: 40px height, maintain aspect ratio
+- Login/About page logo: 64px height
+- Never show the logo without the leaf icon — always use the full lockup
+
+DARK/LIGHT MODE SYSTEM — FULLY FUNCTIONAL:
+Implement a complete, persistent dark/light mode system:
+
+1. Create client/src/context/ThemeContext.jsx:
+   - State: theme = 'light' | 'dark'
+   - On mount: read from localStorage('agritrust-theme'), 
+     fallback to system preference (window.matchMedia)
+   - On change: save to localStorage, apply 'dark' class to <html> element
+   - Export: { theme, toggleTheme, setTheme }
+
+2. Tailwind config (tailwind.config.js):
+   darkMode: 'class'  ← essential for class-based dark mode
+
+3. All components MUST use Tailwind dark: variants:
+   Example: className="bg-white dark:bg-[#162A1C] text-gray-900 dark:text-[#E8F5EC]"
+   Never use hardcoded colors — always use Tailwind tokens or CSS variables.
+
+4. Theme Toggle Button component (client/src/components/ui/ThemeToggle.jsx):
+   - A pill-shaped toggle button showing ☀️ Sun (light) or 🌙 Moon (dark)
+   - Smooth animated transition: the pill slides left/right like an iOS toggle
+   - Show in: top navbar (desktop, right side), settings page, mobile menu
+   - Clicking it calls toggleTheme() from ThemeContext
+   - Tooltip on hover: "Switch to dark mode" / "Switch to light mode"
+   - Animation: use CSS transition-all duration-300 ease-in-out
+
+5. Ensure ALL pages work in both modes:
+   - Marketplace cards, modals, sidebars, charts (Recharts supports themes),
+     forms, tables, badges, buttons — everything adapts.
+   - Recharts charts: use CSS variables for colors so they adapt to theme
+   - Login/register page: full dark mode background #0F1F15 with 
+     green glow effect on the hero side
+
+The UI should feel: organic, trustworthy, professional, and modern —
+like a premium fintech app but rooted in nature and agriculture.
+Green dominates. Amber accents for CTAs. Clean white space in light mode.
+Rich deep greens with amber accents in dark mode.
+
+STATIC ASSETS:
+Copy these files into client/public/assets/ on project init:
+- agritrust-logo.png (the uploaded three-leaf logo)
+- agritrust-logo-white.png (derived white-text version for dark backgrounds)
+- agritrust-intro.mp4 (the uploaded brand video — used on About Us page)
+
+Generate the complete project scaffold with all config files, 
+package.json dependencies, Prisma schema, Tailwind config (with darkMode: 'class'),
+Vite config, and folder structure. Do not write feature code yet.
+```
+
+---
+
+## SECTION B — DATABASE SCHEMA + 88,000 USER SEED DATA
+
+```
+Now build the complete Prisma database schema and seed script.
+
+PRISMA SCHEMA — create server/prisma/schema.prisma with these models:
+
+model User {
+  id              String   @id @default(uuid())
+  email           String   @unique
+  phone           String?
+  password        String
+  firstName       String
+  lastName        String
+  role            UserRole @default(FARMER)
+  verificationLevel VerificationLevel @default(BRONZE)
+  trustScore      Float    @default(50)
+  farmScore       Float?
+  country         String   @default("Namibia")
+  region          String?
+  latitude        Float?
+  longitude       Float?
+  profilePhoto    String?
+  bio             String?
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  // Relations
+  listings        Listing[]
+  sentMessages    Message[] @relation("SentMessages")
+  receivedMessages Message[] @relation("ReceivedMessages")
+  transactions    Transaction[]
+  reviews         Review[] @relation("ReviewAuthor")
+  receivedReviews Review[] @relation("ReviewTarget")
+  farmPassport    FarmPassport?
+  barterOffers    BarterOffer[]
+  landListings    LandListing[]
+  disputes        Dispute[]
+  loans           HarvestLoan[]
+  courses         CourseEnrollment[]
+  savedItems      SavedItem[]
+  alerts          TheftAlert[]
+  notifications   Notification[]
+}
+
+enum UserRole {
+  FARMER BUYER LANDOWNER EXPORTER TRANSPORTER
+  VETERINARIAN AGRONOMIST TRAINER COOPERATIVE
+  INPUT_SUPPLIER PROCESSOR INVESTOR LENDER
+  INSURANCE_PARTNER MENTOR ADMIN AGENT NGO
+}
+
+enum VerificationLevel {
+  BRONZE SILVER GOLD PLATINUM
+}
+
+model FarmPassport {
+  id              String   @id @default(uuid())
+  userId          String   @unique
+  user            User     @relation(fields: [userId], references: [id])
+  farmName        String
+  farmSize        Float    // hectares
+  farmSizeUnit    String   @default("ha")
+  latitude        Float?
+  longitude       Float?
+  productsGrown   String[]
+  livestockTypes  String[]
+  certifications  String[]
+  sustainabilityPractices String[]
+  exportReady     Boolean  @default(false)
+  climateRiskScore Float?
+  waterProfile    String?
+  farmPhotos      String[]
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Listing {
+  id              String   @id @default(uuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id])
+  type            ListingType
+  title           String
+  description     String
+  price           Float
+  currency        String   @default("NAD")
+  quantity        Float
+  unit            String
+  category        String
+  subcategory     String?
+  photos          String[]
+  videos          String[]
+  location        String
+  latitude        Float?
+  longitude       Float?
+  isNegotiable    Boolean  @default(true)
+  barterAvailable Boolean  @default(false)
+  escrowRequired  Boolean  @default(false)
+  qualityScanReport Json?
+  verificationBadge String?
+  traceabilityQR  String?
+  status          ListingStatus @default(ACTIVE)
+  views           Int      @default(0)
+  expiresAt       DateTime?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Livestock-specific
+  breed           String?
+  age             Int?     // months
+  weight          Float?
+  healthStatus    String?
+  vaccinationRecords Json?
+
+  // Crop-specific
+  harvestDate     DateTime?
+  packagingDate   DateTime?
+  expiryDate      DateTime?
+  storageHistory  String?
+  qualityGrade    String?
+  shelfLifeDays   Int?
+
+  savedBy         SavedItem[]
+}
+
+enum ListingType {
+  LIVESTOCK CROP GRAIN VEGETABLE FRUIT SEED
+  FEED EQUIPMENT INPUT SERVICE PROCESSED LAND BARTER
+}
+
+enum ListingStatus {
+  ACTIVE SOLD EXPIRED SUSPENDED DRAFT
+}
+
+model Transaction {
+  id              String   @id @default(uuid())
+  buyerId         String
+  sellerId        String
+  listingId       String?
+  amount          Float
+  currency        String   @default("NAD")
+  type            TransactionType
+  status          TransactionStatus @default(PENDING)
+  escrowHeld      Boolean  @default(false)
+  escrowReleasedAt DateTime?
+  paymentMethod   String?
+  reference       String?
+  notes           String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  buyer           User     @relation(fields: [buyerId], references: [id])
+}
+
+enum TransactionType {
+  MARKETPLACE BARTER HARVEST_FINANCE LAND_SHARE
+  ESCROW REFUND LOAN_REPAYMENT COOPERATIVE
+}
+
+enum TransactionStatus {
+  PENDING ESCROW_HELD COMPLETED DISPUTED REFUNDED CANCELLED
+}
+
+model Message {
+  id              String   @id @default(uuid())
+  senderId        String
+  receiverId      String
+  content         String
+  type            MessageType @default(TEXT)
+  isRead          Boolean  @default(false)
+  sender          User     @relation("SentMessages", fields: [senderId], references: [id])
+  receiver        User     @relation("ReceivedMessages", fields: [receiverId], references: [id])
+  createdAt       DateTime @default(now())
+}
+
+enum MessageType { TEXT PHOTO DOCUMENT VOICE QUALITY_REPORT }
+
+model Review {
+  id              String   @id @default(uuid())
+  authorId        String
+  targetId        String
+  rating          Int      // 1-5
+  comment         String?
+  transactionId   String?
+  category        ReviewCategory @default(GENERAL)
+  author          User     @relation("ReviewAuthor", fields: [authorId], references: [id])
+  target          User     @relation("ReviewTarget", fields: [targetId], references: [id])
+  createdAt       DateTime @default(now())
+}
+
+enum ReviewCategory {
+  GENERAL TRADE BARTER LAND_SHARE QUALITY DELIVERY MENTORSHIP
+}
+
+model BarterOffer {
+  id              String   @id @default(uuid())
+  offererId       String
+  offerer         User     @relation(fields: [offererId], references: [id])
+  offeredItems    Json     // array of {name, qty, unit, estimatedValue}
+  requestedItems  Json     // what they want in return
+  estimatedValue  Float?
+  status          BarterStatus @default(OPEN)
+  location        String?
+  category        String?
+  description     String?
+  photos          String[]
+  expiresAt       DateTime?
+  createdAt       DateTime @default(now())
+}
+
+enum BarterStatus { OPEN MATCHED AGREED COMPLETED CANCELLED DISPUTED }
+
+model LandListing {
+  id              String   @id @default(uuid())
+  ownerId         String
+  owner           User     @relation(fields: [ownerId], references: [id])
+  title           String
+  description     String
+  location        String
+  region          String?
+  latitude        Float?
+  longitude       Float?
+  sizeHectares    Float
+  waterAccess     Boolean  @default(false)
+  fenced          Boolean  @default(false)
+  roadAccess      Boolean  @default(false)
+  soilType        String?
+  preferredCrops  String[]
+  leaseModel      LeaseModel @default(FIXED_RENT)
+  rentAmount      Float?
+  harvestSharePct Float?
+  profitSharePct  Float?
+  leasePeriodMonths Int?
+  climateSmartRequired Boolean @default(false)
+  photos          String[]
+  status          LandStatus @default(AVAILABLE)
+  createdAt       DateTime @default(now())
+}
+
+enum LeaseModel { FIXED_RENT HARVEST_SHARE PROFIT_SHARE HYBRID COMMUNITY }
+enum LandStatus { AVAILABLE UNDER_NEGOTIATION LEASED UNAVAILABLE }
+
+model HarvestLoan {
+  id              String   @id @default(uuid())
+  farmerId        String
+  farmer          User     @relation(fields: [farmerId], references: [id])
+  amount          Float
+  currency        String   @default("NAD")
+  interestRatePct Float
+  purpose         String
+  status          LoanStatus @default(PENDING)
+  farmScore       Float?
+  repaymentModel  String   // HARVEST_SALE, BUYER_CONTRACT, COOPERATIVE_SALE
+  repaidAmount    Float    @default(0)
+  dueDate         DateTime?
+  approvedAt      DateTime?
+  createdAt       DateTime @default(now())
+}
+
+enum LoanStatus { PENDING APPROVED ACTIVE REPAID DEFAULTED REJECTED }
+
+model Course {
+  id              String   @id @default(uuid())
+  title           String
+  description     String
+  category        String
+  level           String   @default("Beginner")
+  durationHours   Float
+  price           Float    @default(0)
+  isAccredited    Boolean  @default(false)
+  instructor      String?
+  thumbnail       String?
+  modules         Json?
+  enrollments     CourseEnrollment[]
+  createdAt       DateTime @default(now())
+}
+
+model CourseEnrollment {
+  id              String   @id @default(uuid())
+  userId          String
+  courseId        String
+  progress        Float    @default(0)
+  completedAt     DateTime?
+  certificateUrl  String?
+  user            User     @relation(fields: [userId], references: [id])
+  course          Course   @relation(fields: [courseId], references: [id])
+  enrolledAt      DateTime @default(now())
+}
+
+model SavedItem {
+  id              String   @id @default(uuid())
+  userId          String
+  listingId       String?
+  itemType        String   // listing, profile, land, course, barter, etc.
+  itemId          String
+  folder          String   @default("General")
+  user            User     @relation(fields: [userId], references: [id])
+  listing         Listing? @relation(fields: [listingId], references: [id])
+  savedAt         DateTime @default(now())
+}
+
+model TheftAlert {
+  id              String   @id @default(uuid())
+  reporterId      String
+  reporter        User     @relation(fields: [reporterId], references: [id])
+  animalType      String?
+  description     String
+  lastLocation    String?
+  latitude        Float?
+  longitude       Float?
+  photos          String[]
+  earTagNumber    String?
+  brandMark       String?
+  policeRef       String?
+  status          AlertStatus @default(ACTIVE)
+  reward          Float?
+  createdAt       DateTime @default(now())
+}
+
+enum AlertStatus { ACTIVE RECOVERED CLOSED }
+
+model Dispute {
+  id              String   @id @default(uuid())
+  complainantId   String
+  respondentId    String
+  type            DisputeType
+  description     String
+  evidence        Json?    // array of file URLs
+  status          DisputeStatus @default(OPEN)
+  resolution      String?
+  mediatorNotes   String?
+  complainant     User     @relation(fields: [complainantId], references: [id])
+  createdAt       DateTime @default(now())
+}
+
+enum DisputeType {
+  PAYMENT QUALITY DELIVERY BARTER LAND_SHARE
+  TRANSPORT LOAN_REPAYMENT EXPORT INPUT_QUALITY
+}
+
+enum DisputeStatus { OPEN UNDER_REVIEW RESOLVED CLOSED ESCALATED }
+
+model Notification {
+  id              String   @id @default(uuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id])
+  title           String
+  body            String
+  type            String
+  isRead          Boolean  @default(false)
+  link            String?
+  createdAt       DateTime @default(now())
+}
+
+model ImpactRecord {
+  id              String   @id @default(uuid())
+  userId          String
+  category        ImpactCategory
+  description     String
+  value           Float?
+  unit            String?
+  location        String?
+  latitude        Float?
+  longitude       Float?
+  photos          String[]
+  verifiedAt      DateTime?
+  createdAt       DateTime @default(now())
+}
+
+enum ImpactCategory {
+  TREE_PLANTED LAND_RESTORED WATER_SAVED FOOD_PRODUCED
+  FOOD_RESCUED SCAM_PREVENTED LOAN_FACILITATED BARTER_COMPLETED
+  WOMAN_SUPPORTED YOUTH_TRAINED COOPERATIVE_FUNDED EXPORT_SUPPORTED
+}
+
+---
+
+SEED SCRIPT — create server/seed/seed.js:
+
+Generate realistic seed data for 88,000 users distributed across:
+- 52,000 Farmers (59%) — spread across Namibia, Botswana, South Africa, Zambia
+- 14,000 Buyers (16%) — traders, restaurants, hotels, schools, NGOs
+- 6,000 Landowners (7%)
+- 4,000 Exporters (5%)
+- 3,000 Transporters (3%)
+- 2,000 Veterinarians/Agronomists (2%)
+- 2,000 Cooperatives (2%)
+- 1,500 Input Suppliers (2%)
+- 1,500 Processors (2%)
+- 1,000 Investors/Lenders (1%)
+- 1,000 Admins/Agents/NGOs (1%)
+
+For each user generate:
+- Realistic African first and last names (mixed male/female, 60/40)
+- Valid email based on name
+- Country and region from [Namibia, Botswana, South Africa, Zambia, Zimbabwe]
+- Namibia regions: Khomas, Otjozondjupa, Kunene, Ohangwena, Oshana, 
+  Omusati, Oshikoto, Kavango East, Kavango West, Zambezi, Erongo,
+  Hardap, //Kharas, Omaheke
+- Trust score: random 40-98
+- Farm score: random 30-95 (farmers only)
+- Verification level: weighted [Bronze 40%, Silver 30%, Gold 20%, Platinum 10%]
+- createdAt: spread randomly over the last 3 years
+
+Also seed:
+- 180,000 listings (avg 3.5 per farmer): livestock, crops, inputs, equipment
+- 45,000 barter offers
+- 22,000 land listings
+- 12,000 harvest loans
+- 95,000 transactions (various types)
+- 280,000 reviews (avg trust-score-weighted)
+- 35,000 theft alerts (90% resolved)
+- 8,500 disputes (85% resolved)
+- 60 courses across all categories
+- 210,000 course enrollments
+- 420,000 impact records (trees, land, food rescued, etc.)
+- 55,000 saved items
+
+Use Prisma's createMany() with batches of 500 for performance.
+Use faker.js (npm install @faker-js/faker) for realistic data generation.
+Add seed progress logging: console.log() after each entity type.
+Script should be runnable with: node server/seed/seed.js
+Add a --reset flag that calls prisma.deleteMany() on all tables first.
+Estimated runtime: ~8–15 minutes for full seed.
+
+IMPORTANT — SEED SIZE STRATEGY:
+The seed script must support two modes via a command-line flag:
+
+  node server/seed/seed.js --full     → seeds all 88,000 users (default)
+  node server/seed/seed.js --lite     → seeds 25,000 users (fallback)
+
+The --lite mode uses the same proportions and data quality but scales
+all counts down proportionally (e.g. 50,000 listings instead of 180,000).
+Use --lite if Replit runs out of memory or the seed takes longer than 20 mins.
+The UI and all features work identically at either size — the difference
+is invisible to anyone using the app.
+```
+
+---
+
+## SECTION C — FEATURE MODULES (Paste one at a time)
+
+### MODULE 1: Authentication & User System
+
+```
+Build the complete authentication system for AgriTRUST:
+
+BACKEND (server/routes/auth.js + server/controllers/authController.js):
+- POST /api/auth/register — email, phone, password, role, firstName, lastName, country, region
+- POST /api/auth/login — returns JWT (7-day expiry)
+- POST /api/auth/logout
+- GET /api/auth/me — returns current user + farmPassport
+- PUT /api/auth/profile — update profile fields
+- POST /api/auth/verify — simulate phone/email OTP verification
+- POST /api/auth/change-password
+
+FRONTEND PAGES:
+1. /login — Full-page split layout: left side shows AgriTRUST hero with 
+   green gradient, animated statistics ("240,000+ farmers across Africa", 
+   "180,000+ listings", "95% dispute resolution rate"), 
+   right side has clean login form. Include "Remember me", forgot password link.
+
+2. /register — Multi-step form wizard (4 steps):
+   Step 1: Role selection — beautiful card grid showing all 18 user roles 
+           with icons and descriptions. User clicks their role.
+   Step 2: Personal info — name, email, phone, country, region
+   Step 3: Set password + terms agreement
+   Step 4: Success animation + redirect to dashboard
+
+3. /profile — User profile page showing:
+   - Profile photo (upload), name, role badge, verification level badge
+   - Trust Score ring visualization (Recharts RadialBarChart)
+   - Farm Score bar (farmers only)
+   - Quick stats: listings, transactions, reviews, impact score
+   - Editable bio, contact, location
+   - Verification level progress bar with "How to upgrade" CTA
+   - Recent activity feed
+
+COMPONENTS:
+- <UserRoleBadge role={role} /> — colored badge per role type
+- <VerificationBadge level={level} /> — Bronze/Silver/Gold/Platinum with icons
+- <TrustScoreRing score={score} /> — animated circular chart
+- <FarmScoreBar score={score} /> — gradient progress bar
+
+AUTH CONTEXT:
+- React Context with: user, token, login(), logout(), updateUser()
+- Persist token in localStorage
+- Auto-logout on 401 responses
+- Protected route wrapper component <PrivateRoute />
+```
+
+### MODULE 2: Main Dashboard & Navigation
+
+```
+Build the AgriTRUST main application shell and dashboard.
+
+NAVIGATION:
+1. Top navbar: AgriTRUST logo (green leaf icon + wordmark), search bar, 
+   notification bell (with unread count badge), messages icon, 
+   user avatar dropdown (profile, settings, logout)
+   
+2. Left sidebar (desktop) / Bottom nav (mobile):
+   Organize navigation into sections:
+   
+   TRADE
+   - 🛒 Marketplace
+   - 📋 Buyer Requests  
+   - 🔄 Barter Exchange
+   - 🏔️ Wholesale Market
+   - 🌍 Export & Global Trade
+   
+   LAND & FINANCE  
+   - 🌾 LandShare
+   - 💰 Harvest Finance
+   - 🏦 Cooperative Treasury
+   
+   TOOLS
+   - 🤝 DealWise Negotiate
+   - 🔬 QualityScan
+   - 🛡️ InputGuard
+   - 📊 Farm Accounting
+   
+   PROTECT
+   - ⚠️ AgriTRUST Protect
+   - 🚨 Theft Alerts
+   - ⚖️ SafeTrade Disputes
+   
+   GROW
+   - 📚 AgriTRUST Academy
+   - 👨‍🏫 Mentorship
+   - 🌱 Climate & Impact
+   - 📡 AgriPredict
+   
+   LOGISTICS
+   - 🚛 AgriHaul Transport
+   - 🧊 Storage & Cold Chain
+   - ⚡ AgriEnergy
+   
+   COMMUNITY
+   - 👥 Farmer Network
+   - 💬 Messages
+   - 🔖 AgriSave
+
+MAIN DASHBOARD PAGE (/dashboard):
+Show a role-adaptive dashboard. If role=FARMER show:
+
+Row 1 — Stats cards (animated count-up on load):
+- Active Listings | Total Earned (NAD) | Trust Score | Farm Score
+
+Row 2 — Quick Actions (large icon buttons):
+- Post Listing | Scan Quality | Get Finance | Find Land | Exchange Goods
+- Report Theft | Book Transport | Talk to Expert | Join Auction
+
+Row 3 (2/3 width) — Recent Activity Feed:
+- New offers received, messages, deal updates, loan status
+- Color-coded by type: green=sale, amber=finance, blue=message
+
+Row 3 (1/3 width) — Market Intelligence:
+- Today's avg cattle price (NAD)
+- Today's tomato price per kg
+- My nearest buyer (distance)
+- Weather alert banner if applicable
+
+Row 4 — Impact Summary:
+- Mini ImpactLedger: trees planted, food rescued, land restored
+- Progress ring: FarmScore improvement this month
+
+Row 5 — Recommended for You:
+- 4 listing cards: "Buyers Near You", "Open Land Listings", "New Courses"
+
+ADAPTIVE DASHBOARDS by role:
+- BUYER: Pending orders, seller ratings, open requests, market prices
+- LANDOWNER: My land listings, active leases, harvest share income tracker
+- EXPORTER: Export desk, quality-verified suppliers, global trade desk link
+- COOPERATIVE: Member count, treasury balance, group loans, bulk contracts
+
+PLATFORM STATS BANNER (shown to all users):
+Animated counter bar showing platform totals. Use TWO layers of numbers:
+
+MARKETING DISPLAY (what visitors and users see in the banner):
+"Join 240,000+ farmers across Africa" | "180,000+ Listings" | 
+"NAD 2.4B Transacted" | "42,000 Trees Planted" | "95% Dispute Resolution Rate"
+
+REAL DATA (what powers all search results, feeds, and features):
+The actual 88,000 seeded users — this is what the database queries return.
+
+This is intentional and standard practice for demo-stage products:
+the banner shows the aspirational/target market size while the 
+underlying data makes every feature feel realistically populated.
+The 240,000 figure represents AgriTRUST's addressable farmer 
+population in the initial launch markets, not a false claim.
+
+Implement the banner as a hardcoded constant in:
+client/src/data/platformStats.js
+So it can be updated independently from database query results.
+```
+
+### MODULE 3: Agricultural Marketplace
+
+```
+Build the full AgriTRUST marketplace.
+
+BACKEND:
+- GET /api/listings — with filters: type, category, location, priceMin/Max, 
+  verified, barterAvailable, qualityGrade, radius (km), search query
+- GET /api/listings/:id — full listing detail + seller info + quality report
+- POST /api/listings — create listing (authenticated)
+- PUT /api/listings/:id — update own listing
+- DELETE /api/listings/:id — soft delete own listing
+- GET /api/listings/nearby — geolocation-based, accepts lat/lng/radius
+- POST /api/listings/:id/view — increment view count
+- GET /api/listings/categories — all category/subcategory tree
+
+PAGES:
+
+1. /marketplace — Main marketplace:
+   - Hero filter bar: Search, Category dropdown, Location, Price range, 
+     Sort (Newest, Price low/high, Nearest, Highest Rated)
+   - Toggle: Grid view / List view / Map view
+   - Category pills: Livestock | Crops | Equipment | Inputs | Services | Land
+   - Filter sidebar (desktop) / Filter sheet (mobile):
+     - Type checkboxes, verified only toggle, barter available toggle,
+       quality grade filter, distance slider (5-500km), price range slider
+   - Listing grid: 3 cols desktop, 2 cols tablet, 1 col mobile
+   - Infinite scroll pagination
+
+2. Listing Card component <ListingCard />:
+   - Photo (with fallback placeholder), category badge (colored)
+   - AgriTRUST Verified badge if applicable
+   - Title, price (large, bold amber), quantity/unit
+   - Location chip, distance from user
+   - Seller trust score mini-badge (green dot + number)
+   - Barter Available chip (if enabled)
+   - Quality Grade badge (A/B/C) if scanned
+   - Time since posted
+   - Bookmark icon (AgriSave)
+   - Quick "Message Seller" button
+
+3. /marketplace/:id — Listing detail page:
+   - Photo gallery (carousel/lightbox)
+   - All listing fields displayed beautifully
+   - Seller profile card (right sidebar): avatar, name, trust score, 
+     verification badge, response time, "View Full Profile", "Message"
+   - Price section: listed price, negotiable badge, Barter Available
+   - Action buttons: "Buy Now" | "Make Offer via DealWise" | "Barter" | 
+     "Add to Watchlist" (AgriSave) | "Share" | "Report"
+   - QualityScan Report panel (if available): grade, freshness, shelf life
+   - Blockchain traceability accordion: harvest date, farm, transport history
+   - QR code display (generated from listing ID)
+   - Map: farm location pin
+   - Similar listings carousel at bottom
+   - Reviews/ratings from this seller
+
+4. /marketplace/create — Create listing wizard:
+   Step 1: Select type (visual card picker with icons)
+   Step 2: Basic info (title, description, category, subcategory)
+   Step 3: Pricing (price, quantity, currency, negotiable toggle, 
+           barter available toggle)
+   Step 4: Photos (drag-and-drop upload, max 10, preview grid)
+   Step 5: Location (map picker or manual entry)
+   Step 6: Type-specific fields:
+     - Livestock: breed, age, weight, health status, vaccination records,
+       ear tag, transport permit status
+     - Crops: harvest date, expiry date, quality grade, storage history,
+       shelf life estimate
+     - Equipment: condition, year, maintenance history, rental option
+   Step 7: Review & Publish — preview card + checklist of completeness
+   
+Include a listing completeness score (0-100%) that encourages users 
+to add more info for better visibility.
+```
+
+### MODULE 4: DealWise Negotiation System
+
+```
+Build the DealWise AI-powered negotiation module.
+
+BACKEND:
+- POST /api/dealwise/suggest — accepts: listingId, offerAmount, dealType
+  Returns: { suggestedCounterOffer, marketPriceRange, dealRiskScore, 
+             riskFactors[], smartMessages[], dealScore }
+  Simulate AI response with rule-based logic:
+  - marketPriceRange = listing.price * [0.85, 1.15] with some randomness
+  - dealRiskScore = calculate based on seller trust score, listing age, 
+    price deviation from market, buyer verification level
+  - suggestedCounterOffer = listing.price * 0.95 if offer < 90% of price
+  - riskFactors = array of risk strings based on conditions
+  - dealScore = 0-100 based on both party scores + deal terms
+
+- POST /api/dealwise/agreements — create digital deal agreement
+- GET /api/dealwise/agreements/:id — get agreement detail
+- GET /api/dealwise/agreements/my — list my agreements
+- PUT /api/dealwise/agreements/:id/sign — digital signature
+- GET /api/dealwise/history — my negotiation history
+
+PAGE: /dealwise
+
+Layout: Split pane — left: active negotiation, right: DealWise AI panel
+
+LEFT PANE — Active Deal:
+- Product being negotiated (photo, title, location)
+- Seller info with trust score
+- Current offer vs asking price (visual diff, red/green)
+- Offer input: number field, currency selector
+- "Send Offer" button
+- Negotiation timeline: shows all offers/counter-offers as chat-like bubbles
+  - Green bubble: your offer
+  - Amber bubble: their counter-offer
+  - System message: "Seller accepted" / "Offer expired"
+- Negotiation templates: "Offer with Transport Included", 
+  "Quality-Based Discount Request", "Bulk Order Offer"
+- One-tap digital agreement button (when both accept)
+
+RIGHT PANE — DealWise AI Assistant:
+Green/amber card panel with AI icon
+- "Market Price Range" bar: shows min-max with current offer marker
+- "Deal Risk Score": 0-100 with color coding + explanation
+  Green (70+): Safe deal | Amber (40-69): Proceed carefully | Red (<40): High risk
+- Risk Factors list: e.g. "Seller has no quality scan", "Price 22% below market"
+- Counter-offer suggestion: large number with "Use This" button
+- Smart message suggestions: 3 pre-written negotiation messages to adapt
+- Deal Score: RadialBarChart showing deal quality
+- "Ask DealWise" text input for custom questions
+  (Simulate AI response from a lookup table of common questions)
+
+BARTER NEGOTIATION sub-mode:
+- Instead of price, show "What you offer" vs "What you want"
+- Value estimation for both sides
+- Fair exchange indicator
+- QualityScan verification recommendation
+
+LAND NEGOTIATION sub-mode:
+- Lease model selector (Fixed/Harvest Share/Profit Share/Hybrid)
+- Harvest share % slider with income projection
+- Lease period selector
+- Clause checklist: water rights, soil protection, infrastructure
+
+DIGITAL AGREEMENT page:
+Full-screen modal for agreement confirmation:
+- Agreement summary (all terms)
+- Both parties' details and verification badges  
+- Signature pad (mouse/touch drawn signature)
+- Timestamp + Agreement ID
+- "Download PDF" | "Send to Email" buttons
+- Share to AgriSave
+```
+
+### MODULE 5: QualityScan Feature
+
+```
+Build the QualityScan AI harvest quality assessment feature.
+
+BACKEND:
+- POST /api/qualityscan/scan — accepts: listingId (optional), 
+  productType, description, harvestDateClaimed, storageMethod
+  Returns simulated AI quality report (rule-based with randomness)
+- GET /api/qualityscan/reports — my scan history
+- GET /api/qualityscan/reports/:id — full report
+- POST /api/qualityscan/reports/:id/attach — attach to listing
+
+Quality Report Generation Logic (server-side):
+- Grade: A (40% chance), B (35% chance), C (15% chance), Fail (10%)
+- Freshness: High/Medium/Low/Poor based on harvestDate gap
+- Defects: random defect list from category-specific defect arrays
+- Shelf life: category-based + freshness modifier
+- Recommendations: rules-based from grade + category
+- Always include disclaimer: "Based on visual assessment and records provided.
+  For export or certified food safety, request laboratory inspection."
+
+PAGE: /qualityscan
+
+Top section — Scan Interface:
+- Large product image upload area (drag and drop)
+- Product type selector dropdown (with icons per category)
+- Claimed harvest date picker
+- Storage method notes text area
+- "Run QualityScan" button — shows loading animation for 2-3 seconds
+  (simulating AI processing)
+
+Results section — animated reveal after scan:
+Overall Grade badge: large A/B/C with color
+  A = deep green background, gold star
+  B = amber background  
+  C = orange background
+  Fail = red background
+
+Quality metrics panel (4 cards):
+- Freshness Level: High/Medium/Low with icon
+- Estimated Shelf Life: "5-7 days if refrigerated"
+- Defects Found: "Minor bruising on ~3% of produce"
+- Expiry Risk: Low/Medium/High
+
+Full QualityScan Report card:
+- Product summary
+- Visual assessment notes
+- Recommended action (sell fresh market, process, cold store, etc.)
+- Traceability status
+- Important disclaimer box (styled, non-removable)
+- "Attach to Listing" button
+- "Download Report PDF" button
+- "Share Report" button
+- "Book Expert Inspection" CTA
+
+Scan History table:
+- List of past scans with grade, product, date, listing attached
+- Filter by grade, product type, date range
+- Re-scan option
+
+InputGuard sub-section:
+- Separate scan interface for agricultural inputs
+- Input type: seed/fertilizer/pesticide/medicine/feed
+- Scan by: QR code input, barcode, batch number, supplier name
+- Warning levels: Verified / Unverified / Suspected Fake / Expired
+- Supplier verification database check (simulated)
+- "Report Fake Input" button → creates a report
+```
+
+### MODULE 6: LandShare Module
+
+```
+Build the AgriTRUST LandShare land access and shared harvest module.
+
+BACKEND:
+- GET /api/landshare — browse land listings with filters
+- GET /api/landshare/:id — land listing detail
+- POST /api/landshare — create land listing (landowners)
+- PUT /api/landshare/:id — update land listing
+- POST /api/landshare/:id/apply — farmer applies to lease land
+- GET /api/landshare/applications/my — farmer's applications
+- GET /api/landshare/applications/received — landowner's received applications
+- PUT /api/landshare/applications/:id — accept/reject application
+- POST /api/landshare/agreements — generate digital land agreement
+- GET /api/landshare/agreements/my — my active land agreements
+- GET /api/landshare/calculator — harvest share income projection
+
+PAGES:
+
+1. /landshare — Browse available land:
+   - Map view with pins showing available land parcels (simulated)
+   - List view with LandCard components
+   - Filters: region, size range, lease model, water access, 
+     fenced, crop type
+   - "List My Land" CTA (for landowners)
+   - "Find Me Land" form (for farmers): submit requirements
+
+2. LandCard component:
+   - Land photo, hectares badge (large), region
+   - Lease model badge: Fixed Rent / Harvest Share / Profit Share
+   - Key features chips: 💧 Water Access, 🚧 Fenced, 🛣️ Road Access
+   - Landowner trust score mini-badge
+   - Price/terms summary
+   - "View Land" | "Express Interest" buttons
+
+3. /landshare/:id — Land listing detail:
+   - Photo gallery
+   - Full land description and specifications table
+   - Map showing land location
+   - Landowner profile card
+   - Lease terms section:
+     - Lease model with visual explanation
+     - Income projection calculator (interactive):
+       Farmer inputs: expected yield (kg), expected price (NAD/kg)
+       → Shows: Landowner share (NAD) | Farmer profit (NAD) | 
+                Break-even yield
+   - "Apply for This Land" — opens application form
+   - LandShare Agreement Preview — shows all standard clauses
+   - Important notice: "AgriTRUST LandShare supports temporary land-use 
+     agreements. It does NOT transfer land ownership."
+
+4. /landshare/my — Landowner dashboard:
+   - My land listings (status chips: Available/Leased/Under Negotiation)
+   - Active lease cards: farmer name, crop, expected harvest date,
+     harvest share tracker (progress bar)
+   - Income received vs projected chart (Recharts)
+   - Application inbox: pending farmer applications with accept/reject
+   - "Add New Land Listing" button
+
+5. /landshare/agreements/:id — Digital agreement view:
+   - Full land-use agreement with all clauses
+   - Both parties' verification badges
+   - Digital signatures section
+   - Harvest reporting timeline
+   - Dispute escalation link
+```
+
+### MODULE 7: Harvest Finance
+
+```
+Build the AgriTRUST Harvest Finance module.
+
+BACKEND:
+- GET /api/finance/products — loan products from partners
+- POST /api/finance/apply — loan application
+- GET /api/finance/applications/my — my applications
+- GET /api/finance/loans/active — my active loans
+- POST /api/finance/repay — simulate repayment via harvest sale
+- GET /api/finance/eligibility — check eligibility (uses FarmScore)
+- GET /api/finance/calculator — loan affordability calculator
+
+Simulate 5 lending partner products with different rates/terms.
+
+PAGES:
+
+1. /harvest-finance — Main finance hub:
+   
+   Top section — Eligibility banner:
+   Show user's FarmScore with colored indicator:
+   - Score 80+: "You qualify for all loan products ✓" (green banner)
+   - Score 60-79: "You qualify for 3 of 5 products" (amber banner)
+   - Score <60: "Improve your FarmScore to access finance" + action list
+
+   Loan Products grid (3 cards):
+   Each card shows: Partner logo placeholder, loan name, amount range,
+   interest rate %, repayment model, eligibility requirements,
+   "Apply Now" button (locked if not eligible)
+   
+   Active Loans section:
+   Each loan: progress bar (repaid/total), next repayment expected date,
+   repayment method chip, "View Details" link
+   
+   Quick Calculator card (always visible):
+   - Loan amount slider (N$5,000 – N$500,000)
+   - Interest rate (auto-selected from best product)
+   - Harvest timeline (3/6/9/12 months)
+   - Shows: Total repayable | Monthly equivalent | % of harvest needed
+     based on average yield prices for selected crop type
+
+2. /harvest-finance/apply — Application form:
+   Step 1: Select loan product
+   Step 2: Loan amount and purpose (dropdown: seeds/feed/equipment/etc.)
+   Step 3: Repayment plan:
+     - Preferred model: Harvest Sale % / Fixed Post-Harvest / Buyer Contract
+     - Select linked buyer contract (if any)
+     - Estimated harvest month
+   Step 4: Supporting information:
+     - Farm Passport completeness check (shows missing items)
+     - Upload any additional documents
+   Step 5: Review & Submit
+   Step 6: Success — "Application submitted. Expected review: 2-5 business days"
+
+3. /harvest-finance/loans/:id — Active loan detail:
+   - Loan summary card
+   - Repayment timeline (Recharts timeline chart)
+   - Repayment history table
+   - "Record Harvest Sale Repayment" button
+   - Contact lender button
+   - Dispute button (SafeTrade link)
+```
+
+### MODULE 8: AgriHaul Transport & Logistics
+
+```
+Build the AgriHaul logistics and transport module.
+
+BACKEND:
+- GET /api/agrihaul/loads — open load board listings
+- POST /api/agrihaul/loads — post a new load
+- GET /api/agrihaul/trucks — available trucks near location
+- POST /api/agrihaul/trucks — register truck availability
+- POST /api/agrihaul/loads/:id/quote — transporter submits quote
+- PUT /api/agrihaul/loads/:id/accept/:quoteId — shipper accepts quote
+- GET /api/agrihaul/bookings/my — my active bookings
+- PUT /api/agrihaul/bookings/:id/delivered — confirm delivery
+
+PAGES:
+
+1. /agrihaul — Load Board main page:
+   
+   Top tabs: Open Loads | Available Trucks | My Bookings
+   
+   Open Loads tab:
+   - Filter bar: cargo type, from region, to region, date range, cold chain
+   - Load cards in list format:
+     Load card: cargo icon, cargo type badge, 
+     FROM → TO (with distance km), weight/volume,
+     pickup date, offered rate (NAD), urgency chip
+     Transporter rating requirement, "Submit Quote" button
+   - Map toggle: shows pins for all open loads
+   
+   Available Trucks tab (for shippers):
+   - Filter: vehicle type, location, capacity, cold chain
+   - Truck cards: vehicle type icon, capacity, current location,
+     coverage area, transporter rating, "Invite to Quote" button
+   
+   My Bookings:
+   - Status tabs: Pending | Active | Completed
+   - Booking card: cargo description, transporter details,
+     pickup/delivery status tracker (step progress component),
+     "Confirm Delivery" button (for shippers)
+     "Upload Delivery Proof" button (for transporters)
+   - Integrated with Farm Accounting (freight cost auto-logged)
+
+2. /agrihaul/post-load — Post a Load:
+   - Cargo type (dropdown with icons)
+   - Origin (region + specific location + map pin)
+   - Destination (same)
+   - Cargo details: weight, volume, special requirements
+   - Cold chain required toggle (shows temperature range if yes)
+   - Preferred pickup date
+   - Budget (optional: show as "negotiable" or fixed rate)
+   - Urgency level: Normal / Urgent / Critical
+   - Upload cargo photos/documents
+   - Post button → redirects to load detail with "Waiting for quotes"
+
+3. /agrihaul/register-truck — Transporter registration:
+   - Vehicle type, make, model, year, registration number
+   - Load capacity (tons/m³)
+   - Cold chain capability toggle
+   - Service regions (multi-select checkboxes)
+   - Availability calendar
+   - Upload: vehicle registration, insurance document, driver license
+   - Rate per km (optional)
+
+Freight Escrow flow:
+When shipper accepts a quote → escrow modal appears:
+"Pay NAD [amount] into AgriTRUST escrow?"
+Progress: Escrow Held → Pickup Confirmed → Delivered → Funds Released
+```
+
+### MODULE 9: AgriEnergy Module
+
+```
+Build the AgriEnergy renewable energy marketplace module.
+
+BACKEND:
+- GET /api/agrienergy/products — solar/renewable energy products
+- POST /api/agrienergy/calculator — energy needs calculator
+- GET /api/agrienergy/surplus — peer-to-peer surplus listings
+- POST /api/agrienergy/surplus — list surplus energy
+- GET /api/agrienergy/credits/my — my AgriEnergy credits
+- POST /api/agrienergy/finance/apply — solar finance application
+
+PAGES:
+
+1. /agrienergy — Main energy hub:
+   
+   Hero: Green-to-amber gradient banner
+   "Power your farm. Cut costs. Earn from surplus."
+   Energy cost calculator CTA
+   
+   Section: My Energy Dashboard (if enrolled):
+   - Daily solar generation gauge (simulated kWh)
+   - Cost savings this month (NAD)
+   - AgriEnergy Credits earned
+   - Surplus available for trading
+   
+   Section: Energy Products Marketplace:
+   Category tabs: Solar Irrigation | Biogas | Batteries | Wind | Equipment
+   Product cards: photo, product name, supplier (verified badge),
+   capacity/specs, price, rating, "Get Quote" | "Finance This" buttons
+   
+   Section: Peer-to-Peer Energy Trading:
+   - Map showing nearby surplus sellers
+   - Surplus listing cards: seller location, available kWh, price per kWh,
+     "Buy Energy" button → opens negotiation
+   - "List My Surplus" button
+   
+   Section: Solar Finance:
+   - "Finance Your Solar System" CTA card
+   - Harvest-linked repayment explanation
+   - "Check Eligibility" → pulls FarmScore
+   - Partner finance products grid
+   
+   Section: Biogas & Waste-to-Energy:
+   - "Turn farm waste into fuel" explainer
+   - Biogas system suppliers listing
+   - Waste marketplace: list manure/crop residue for sale
+
+2. /agrienergy/calculator — AI Energy Calculator:
+   Input form:
+   - Farm size (hectares)
+   - Primary crop/livestock type
+   - Irrigation method (drip/flood/sprinkler/manual)
+   - Current energy source (diesel/grid/none)
+   - Current monthly energy cost (NAD)
+   
+   Results section (instant, rule-based calculation):
+   - Recommended solar capacity (kW)
+   - Estimated installation cost range (NAD)
+   - Estimated monthly savings (NAD)
+   - Payback period (months)
+   - AgriEnergy Credits potential per month
+   - Chart: Cost comparison over 5 years (solar vs diesel/grid)
+   - Recommended products from marketplace
+   - "Apply for Finance" CTA
+```
+
+### MODULE 10: Community Features & Farmer Network
+
+```
+Build the social and community features.
+
+BACKEND:
+- GET /api/posts — community feed with pagination
+- POST /api/posts — create post
+- POST /api/posts/:id/like — like a post
+- POST /api/posts/:id/comment — add comment
+- GET /api/communities — list all communities
+- POST /api/communities/:id/join — join community
+- GET /api/communities/:id/posts — community-specific feed
+- GET /api/users/nearby — nearby farmers/buyers/vets
+- GET /api/users/:id — public profile
+- POST /api/users/:id/follow — follow a user
+- GET /api/mentors — browse mentors
+- POST /api/mentors/:id/request — request mentorship
+
+PAGES:
+
+1. /network — Farmer Social Network:
+   
+   Left: Community list sidebar
+   Center: Feed (infinite scroll)
+   Right: "People Near You" + "Trending Topics"
+   
+   Post card:
+   - User avatar + name + role badge + verification badge
+   - Timestamp + location chip
+   - Post content (text, photo optional)
+   - Type badge: Trade Update / Harvest Report / Question / Alert / Tip
+   - Like count | Comment count | Share
+   - Comment thread (collapsible, 3 shown by default)
+   
+   Create Post composer (top of feed):
+   - Rich text area
+   - Photo upload
+   - Post type selector
+   - Tag a listing (links to marketplace)
+   - Community selector
+
+2. Communities section (/network/communities):
+   Grid of community cards with member counts, recent activity indicator
+   Pre-seeded communities: Cattle Farmers, Women in Agriculture,
+   Youth Farmers, Organic Producers, Climate-Smart Farmers,
+   QualityScan Circle, DealWise Negotiators, Export-Ready Farmers,
+   Barter Exchange, Co-op Treasury, Mentorship Hub (22 total)
+   Each community has: description, member count, "Join" button,
+   recent posts preview
+
+3. /network/people — Discover People:
+   - "People Near You" map view + list view
+   - Filter by role, verification level, specialty, region
+   - Person card: avatar, name, role, trust score, distance,
+     specialty tags, "Message" | "Follow" | "View Profile" buttons
+
+4. /mentorship — Mentor Network:
+   - "Find a Mentor" / "Become a Mentor" toggle
+   - Mentor cards: expertise tags, years of experience, 
+     farmers mentored count, rating, availability, "Request Session" button
+   - My mentorship sessions: upcoming, past, notes
+
+5. /profile/:id — Public user profile:
+   - Full profile with all public info
+   - Farm Passport card (if farmer)
+   - Listings grid
+   - Reviews/ratings
+   - Impact contributions
+   - "Message" | "Follow" | "Request Mentorship" | "Report" buttons
+```
+
+### MODULE 11: AgriSave, Notifications & Settings
+
+```
+Build AgriSave bookmarks, notification system, and settings.
+
+BACKEND:
+- GET /api/agrisave — user's saved items (grouped by folder)
+- POST /api/agrisave — save an item
+- DELETE /api/agrisave/:id — remove saved item
+- PUT /api/agrisave/:id/folder — move to folder
+- POST /api/agrisave/folders — create custom folder
+- GET /api/notifications — paginated notifications
+- PUT /api/notifications/read-all — mark all as read
+- PUT /api/notifications/:id/read — mark single as read
+- GET /api/settings — user settings
+- PUT /api/settings — update settings
+
+PAGES:
+
+1. /agrisave — AgriSave Library:
+   
+   Left: Folder tree sidebar:
+   Smart folders: All Saved | Listings | People | Land | Finance | Learning
+   Custom folders (user-created)
+   "New Folder" button
+   
+   Main content: Grid of saved items
+   Each saved item card shows: thumbnail, title, type badge,
+   "Last saved on [date]", change notifications badge,
+   "Unsave" | "Move to Folder" | "View" | "Share" buttons
+   
+   Price drop alert banner (amber): "1 bookmarked listing dropped in price!"
+   
+   Compare mode: checkbox multi-select → "Compare (3)" floating button
+   → Side-by-side comparison modal
+
+2. /notifications — Notification Center:
+   - Filter tabs: All | Trade | Finance | Alerts | Community | System
+   - Notification items: icon (per type), title, body, time, unread dot
+   - "Mark All Read" button
+   - Grouped by: Today | Yesterday | This Week | Earlier
+   
+   Notification types with icons:
+   🟢 New offer on your listing
+   💰 Payment received / Escrow released
+   🤝 Deal agreement signed
+   ⚠️ Theft alert in your area
+   📍 New land listing near you
+   📦 Delivery confirmed
+   💬 New message
+   🌱 Your FarmScore improved
+   📚 Course completion certificate ready
+   🌦️ Weather alert for your region
+   ❤️ Someone liked your post
+   🔔 Loan application update
+
+3. /settings — Settings page:
+   Sections:
+   - Account: email, phone, password change, 2FA toggle
+   - Notifications: toggle per category (push, email, SMS)
+   - Privacy: who can see my profile, location visibility
+   - Language: Afrikaans, English, Oshiwambo, Setswana, Zulu (UI labels)
+   - Verification: upgrade verification level with document upload
+   - Data & Privacy: download my data, delete account, data sharing opt-out
+   - Linked Accounts: mobile money, bank account placeholders
+   - Farm Passport: link to edit farm passport
+   - Help & Support: FAQs, contact, report abuse
+```
+
+### MODULE 12: Impact, Reports & Government Dashboard
+
+```
+Build the ImpactLedger, farm accounting, and analytics dashboards.
+
+BACKEND:
+- GET /api/impact/platform — platform-wide impact totals (public)
+- GET /api/impact/my — my personal impact record
+- POST /api/impact/record — log an impact activity
+- GET /api/farm-accounting/summary — seasonal P&L summary
+- POST /api/farm-accounting/entries — log income/expense
+- GET /api/farm-accounting/entries — list entries with filters
+- GET /api/analytics/government — aggregated regional data (admin only)
+- GET /api/farmscore/my — get my FarmScore breakdown
+
+PAGES:
+
+1. /impact — ImpactLedger:
+   
+   Platform Impact Banner (full width, animated counters):
+   Trees Planted: 42,847 | Land Restored: 8,420 ha | 
+   Food Rescued: 2,140 tons | Women Farmers: 24,300 |
+   Youth Trained: 18,750 | Green Jobs: 6,200 |
+   Scams Prevented: 14,300 | Fake Inputs Flagged: 8,900
+   
+   My Impact card:
+   Personal contribution breakdown with icons and values
+   "Log New Impact Activity" → form (activity type, description, value, photo)
+   
+   Regional Impact Map: Namibia/Africa outline SVG with dots showing 
+   impact density by region
+   
+   Impact categories with progress bars:
+   🌳 Environment | 🌾 Food Security | 💰 Economic | 👥 Social | ⚡ Energy
+
+2. /farm-accounting — Farm Accounting:
+   
+   Header: Season selector dropdown (Rainy 2024-25, Dry 2024, etc.)
+   
+   Summary cards:
+   Total Income | Total Expenses | Net Profit | Profit Margin %
+   (each with vs last season % change arrow)
+   
+   Profit/Loss chart: Recharts BarChart showing monthly income vs expenses
+   
+   Income Breakdown donut chart: Cattle Sales | Crop Sales | Barter | LandShare | Other
+   Expense Breakdown donut chart: Inputs | Labour | Transport | Storage | Loan Repayments | Other
+   
+   Transactions table (full ledger):
+   Date | Description | Category | Income | Expense | Balance
+   Filter: date range, category, type
+   
+   Log Entry form (always accessible, right sidebar):
+   Type (Income/Expense), Category dropdown, Amount, Description, Date, 
+   "Link to Listing" option
+   
+   "Export to PDF" | "Export CSV" | "Tax-Ready Report" buttons
+
+3. /farmscore — FarmScore Detail:
+   
+   Large score display: 84/100 with "Market Ready" badge
+   
+   Score breakdown wheel chart (Recharts RadarChart):
+   - Verification Status
+   - Farm Passport Completeness  
+   - Quality Scan History
+   - Reputation Score
+   - Transaction History
+   - Training Completed
+   - Climate Practices
+   - Finance Readiness
+   
+   Each factor: score/25, color bar, "How to improve" expandable tip
+   
+   "What you unlock at each score level":
+   60: Basic loans | 70: Insurance | 80: Export programs | 90: Premium finance
+   
+   Improvement checklist: prioritized list of actions to raise score
+
+4. /admin/dashboard — Government/NGO Dashboard (admin role only):
+   Regional heatmaps, trend charts, food security indicators,
+   youth participation rates, export readiness index, 
+   district-by-district comparison tables
+```
+
+### MODULE 13: About Us Page + Logo + Dark Mode
+
+```
+Build the AgriTRUST About Us page, integrate the logo across the platform,
+and implement the fully functional dark/light mode toggle.
+
+═══════════════════════════════════════════════
+PART A — LOGO INTEGRATION (do this across the entire app)
+═══════════════════════════════════════════════
+
+1. Place the logo file at: client/public/assets/agritrust-logo.png
+   This is the official three-leaf logo (dark green center leaf, light
+   green left leaf, gold/amber right leaf) with "AgriTRUST" wordmark.
+
+2. Create a <Logo /> component (client/src/components/ui/Logo.jsx):
+   - Props: size ('sm'|'md'|'lg'), variant ('full'|'icon-only')
+   - In light mode: show agritrust-logo.png
+   - In dark mode: show agritrust-logo-white.png (white wordmark version)
+   - Reads current theme from ThemeContext automatically
+   - sm = 32px height | md = 48px height | lg = 80px height
+   - Always links to "/" when clicked
+
+3. Use <Logo /> in:
+   - Top navbar: size="md" variant="full"
+   - Login page left panel: size="lg" variant="full"  
+   - Register page: size="md" variant="full"
+   - About Us page hero: size="lg" variant="full"
+   - Footer: size="sm" variant="full"
+   - Mobile menu header: size="md"
+
+═══════════════════════════════════════════════
+PART B — DARK/LIGHT MODE TOGGLE (fully functional)
+═══════════════════════════════════════════════
+
+1. ThemeContext (client/src/context/ThemeContext.jsx):
+```jsx
+import { createContext, useContext, useEffect, useState } from 'react';
+const ThemeContext = createContext();
+export function ThemeProvider({ children }) {
+  const [theme, setThemeState] = useState(() => {
+    const saved = localStorage.getItem('agritrust-theme');
+    if (saved) return saved;
+    return window.matchMedia('(prefers-color-scheme: dark)').matches 
+      ? 'dark' : 'light';
+  });
+  useEffect(() => {
+    const root = document.documentElement;
+    if (theme === 'dark') { root.classList.add('dark'); }
+    else { root.classList.remove('dark'); }
+    localStorage.setItem('agritrust-theme', theme);
+  }, [theme]);
+  const toggleTheme = () => setThemeState(t => t === 'light' ? 'dark' : 'light');
+  return (
+    <ThemeContext.Provider value={{ theme, toggleTheme, setTheme: setThemeState }}>
+      {children}
+    </ThemeContext.Provider>
+  );
+}
+export const useTheme = () => useContext(ThemeContext);
+```
+
+2. ThemeToggle component (client/src/components/ui/ThemeToggle.jsx):
+   Design: pill-shaped toggle (56px wide × 28px tall)
+   - Left half: ☀️ sun icon (amber, active in light mode)
+   - Right half: 🌙 moon icon (blue-white, active in dark mode)
+   - The active side glows with a soft colored highlight
+   - Smooth 300ms transition on toggle
+   - Renders in navbar (desktop: right side before avatar),
+     mobile menu (bottom of menu list), and /settings page
+   - Full ARIA support: role="switch" aria-checked={theme==='dark'}
+   - Tooltip: "Switch to dark mode" / "Switch to light mode"
+
+3. All existing pages/components: apply dark: Tailwind variants throughout.
+   Key class patterns:
+   - Backgrounds: bg-[#F8FAF5] dark:bg-[#0F1F15]
+   - Surfaces/cards: bg-white dark:bg-[#162A1C]
+   - Text: text-[#1C2B1E] dark:text-[#E8F5EC]
+   - Subtle text: text-[#6B7F6E] dark:text-[#8FAF97]
+   - Borders: border-[#E2EDE5] dark:border-[#2A3D2E]
+   - Inputs: bg-white dark:bg-[#1A2E20] border dark:border-[#2A3D2E]
+   - Navbar: bg-white dark:bg-[#0A1710] border-b dark:border-[#2A3D2E]
+   - Sidebar: bg-[#F8FAF5] dark:bg-[#111E16]
+   - Primary buttons: always bg-[#1A6B3A] text-white (unchanged in dark mode)
+   - Hover states: hover:bg-[#145C30] dark:hover:bg-[#1F7D43]
+
+═══════════════════════════════════════════════
+PART C — ABOUT US PAGE (/about)
+═══════════════════════════════════════════════
+
+This is a PUBLIC page (no login required). 
+Design benchmark: https://k12edu.io/about
+Style reference: modern edtech/impact startup — bold typography, 
+generous whitespace, full-width sections with alternating layouts,
+smooth scroll-triggered fade-in animations, prominent video embed,
+large impact numbers, clean team cards, strong mission copy.
+
+The page uses the same global navbar (with dark mode toggle) and footer.
+
+─────────────────────────────────────────────
+SECTION 1 — HERO
+─────────────────────────────────────────────
+Full-width, min-height 90vh
+Background: radial gradient mesh — deep green (#0F2C18) center fading 
+to black at edges, with subtle noise texture overlay
+Center-aligned content:
+
+  <Logo size="lg" /> 
+  
+  Eyebrow text (small caps, amber, letter-spaced):
+  "BUILDING THE FUTURE OF AGRICULTURE"
+
+  H1 (Playfair Display, 72px desktop / 40px mobile, white):
+  "Where Farmers, Land, Markets,
+   and Trust Finally Meet."
+
+  Body text (DM Sans, 20px, white/70%):
+  "AgriTRUST is not just a platform. It is a promise — 
+   to Africa's farmers, landowners, communities, 
+   and the land that feeds us all."
+
+  Two CTA buttons:
+  [Watch Our Story ▶] (amber, solid) → scrolls to video section
+  [Join AgriTRUST →] (white outline) → /register
+
+  Bottom: animated scroll-down chevron
+
+─────────────────────────────────────────────
+SECTION 2 — VIDEO (THE AGRITRUST STORY)
+─────────────────────────────────────────────
+Background: #F8FAF5 dark:bg-[#0F1F15]
+Center-aligned, max-width 1100px
+
+  Eyebrow: "OUR STORY"
+  H2 (Playfair Display, 48px): "From Soil to Market. From Vision to Reality."
+  
+  Subtext (DM Sans, 18px, muted):
+  "Watch how AgriTRUST is transforming agriculture across Southern Africa —
+   connecting farmers to buyers, land to farmers, and communities to food."
+
+  VIDEO PLAYER — Large, prominent, rounded-2xl, shadow-2xl:
+  Source: /assets/agritrust-intro.mp4 (the uploaded video)
+  - HTML5 <video> element with custom styled controls
+  - Poster frame: AgriTRUST logo centered on deep green background
+    (use CSS to create this if no poster image available)
+  - Controls: play/pause, progress bar (amber), volume, fullscreen
+  - Autoplay: FALSE. User must click play.
+  - Aspect ratio: 16:9, responsive width 100%
+  - On play: fade out the poster overlay smoothly
+  - Border: 2px solid rgba(245,166,35,0.3) (subtle amber glow)
+  - On dark mode: add box-shadow: 0 0 60px rgba(26,107,58,0.4) (green glow)
+  
+  Below video: three stat pills in a row:
+  [🌍 5 Countries] [👩‍🌾 240,000+ Farmers] [🌱 26 Platform Pillars]
+
+─────────────────────────────────────────────
+SECTION 3 — MISSION & VISION
+─────────────────────────────────────────────
+Background: #1A6B3A (solid green — same in both themes)
+Full-width, generous padding
+
+  Two columns:
+  LEFT: 
+    Eyebrow (amber, small caps): "OUR MISSION"
+    Large quote-style text (Playfair Display, 32px, white):
+    "To connect farmers, landowners, buyers, experts,
+     and communities through a secure AI-powered platform
+     that promotes trusted trade, fair negotiation, food 
+     security, and green economic development."
+    
+  RIGHT:
+    Eyebrow (amber): "OUR VISION"
+    Large text (Playfair Display, 32px, white):
+    "To become the world's most trusted digital agriculture 
+     platform — empowering farmers through AI, blockchain, 
+     climate-smart knowledge, and global market access."
+
+  Below (full width): the Brand Promise in large amber text:
+  "Grow better. Sell safer. Finance smarter. Exchange fairly. 
+   Share land. Negotiate wisely. Verify quality. Protect value. 
+   Restore nature. Feed more. Build trust."
+
+─────────────────────────────────────────────
+SECTION 4 — IMPACT NUMBERS
+─────────────────────────────────────────────
+Background: white dark:bg-[#162A1C]
+Animated count-up numbers on scroll-into-view (use IntersectionObserver)
+
+6-stat grid (3×2 desktop, 2×3 tablet, 1×6 mobile):
+
+  🌍 5        — Launch Countries
+  👩‍🌾 240,000+ — Farmers & Landowners
+  📋 26       — Platform Pillars
+  🌳 42,847   — Trees Planted
+  💰 NAD 2.4B — Total Value Transacted
+  ✅ 95%      — Dispute Resolution Rate
+
+Each stat: large number (Playfair Display, 64px, green), label (DM Sans, muted)
+Separator line below: thin amber line, 80px wide, centered
+
+─────────────────────────────────────────────
+SECTION 5 — WHAT WE BELIEVE (BRAND VALUES)
+─────────────────────────────────────────────
+Background: #F8FAF5 dark:bg-[#0F1F15]
+Eyebrow: "OUR VALUES"
+H2: "Agriculture with trust at its roots."
+
+8 value cards in a 4×2 grid (scroll-animated, staggered fade-in):
+Each card (white dark:bg-[#162A1C], rounded-2xl, hover:shadow-lg):
+  Large icon (green), bold title, 2-line description
+
+Values:
+  🛡️ Trust        — "Verification, escrow, blockchain, and reputation at every step."
+  ⚖️ Fairness     — "Fair prices, fair access to land, fair exchange for all."
+  🤖 Innovation   — "AI, machine learning, and blockchain solving real farm problems."
+  🔒 Data Privacy — "Your farm data belongs to you. Always."
+  🌾 Quality      — "Every harvest deserves to be valued by its quality, not guesswork."
+  🌱 Sustainability— "Farming that protects soil, water, biodiversity, and the future."
+  🍽️ Food Security— "Connecting food from farms to families, schools, and clinics."
+  💪 Empowerment  — "Giving farmers tools to sell, learn, finance, and grow."
+
+─────────────────────────────────────────────
+SECTION 6 — THE PLATFORM (26 PILLARS PREVIEW)
+─────────────────────────────────────────────
+Background: #1A6B3A dark version: #111E16 with green left border accent
+Eyebrow (amber): "THE PLATFORM"
+H2 (white): "One trusted digital home for all of agriculture."
+
+Horizontal scrolling pill list of all 26 pillars (auto-scrolling ticker):
+Marketplace | Harvest Finance | LandShare | Barter Exchange | DealWise |
+QualityScan | InputGuard | AgriTRUST Protect | SafeTrade | Farm Accounting |
+FarmScore | Market Stabilizer | Mentorship Network | Co-op Treasury |
+Climate Credits | AgriHaul | AgriEnergy | AgriSave | AgriVoice | AgriLive |
+AgriPredict | Smart Contracts | AgriID | AgriWatch | AgriData | Academy
+
+Below: 3 feature highlight cards (horizontal, icon left, text right):
+  🌾 "Trade with trust"
+     Verified marketplace, escrow payments, AI scam protection, 
+     blockchain traceability — for every deal, every time.
+     
+  💰 "Finance that moves with harvests"
+     Low-interest loans repaid through harvest sales, not fixed schedules.
+     Finance that respects how farming actually works.
+     
+  🌍 "From local to global"
+     Export assistant, Global Trade Desk, DealWise negotiations,
+     and verified international buyers — your farm, the world's table.
+
+─────────────────────────────────────────────
+SECTION 7 — THE TRUST CONSTITUTION
+─────────────────────────────────────────────
+Background: #F8FAF5 dark:bg-[#0F1F15]
+Full-width centered, max-width 800px
+Large decorative quotation mark (green, 120px, Playfair Display)
+
+H2 (Playfair Display, 40px): "Our Public Promise."
+
+Constitution pledges as a vertical list (each with a green checkmark):
+✓ AgriTRUST will protect farmers.
+✓ AgriTRUST will not exploit farmer data.
+✓ AgriTRUST will fight scams and fake inputs.
+✓ AgriTRUST will support fair prices.
+✓ AgriTRUST will promote food security.
+✓ AgriTRUST will protect land and water.
+✓ AgriTRUST will support women and youth.
+✓ AgriTRUST will use AI responsibly.
+✓ AgriTRUST will respect local knowledge.
+✓ AgriTRUST will build trust before profit.
+
+Below: italic caption (muted): 
+"AgriTRUST is not just a platform. It is a promise."
+
+─────────────────────────────────────────────
+SECTION 8 — LAUNCH REGIONS
+─────────────────────────────────────────────
+Background: white dark:bg-[#162A1C]
+Eyebrow: "WHERE WE OPERATE"
+H2: "Starting in Southern Africa. Built for the world."
+
+SVG map of Africa (simplified, clean) with glowing dots on:
+  Namibia (Windhoek), Botswana (Gaborone), South Africa (Johannesburg),
+  Zambia (Lusaka), Zimbabwe (Harare)
+  
+Each dot: pulsing green animation, click shows region name tooltip.
+Right side: list of initial launch countries with flag emoji and farmer count.
+
+Below map: "Future expansion" faded section with smaller dots on:
+Kenya, Tanzania, Ghana, Nigeria, Rwanda, Ethiopia, Brazil, India
+
+─────────────────────────────────────────────
+SECTION 9 — FOUNDER STATEMENT
+─────────────────────────────────────────────
+Background: deep green gradient (#0F2C18 → #1A6B3A)
+Large centered layout, max-width 900px
+
+Pull quote style (Playfair Display italic, 28px, white):
+"AgriTRUST was created from the belief that farmers deserve more 
+ than uncertainty. They deserve trusted markets, fair prices, 
+ safe payments, useful knowledge, affordable finance, fair exchange, 
+ land access, negotiation power, quality verification, data protection, 
+ mentorship, protection, and tools that help them survive climate change."
+
+Attribution: "— AgriTRUST Founder" (amber, DM Sans)
+
+Below: the closer paragraph:
+"We are building a platform where a farmer can sell safely, learn daily,
+ connect globally, restore land, access harvest-linked finance, exchange 
+ goods and services without money, lease land, negotiate fairly, verify 
+ harvest quality, protect livestock, avoid fake inputs, track profit, 
+ resolve disputes, receive mentorship, protect data, measure impact, 
+ understand prices, join a community, and contribute to food security."
+
+─────────────────────────────────────────────
+SECTION 10 — CTA FOOTER BAND
+─────────────────────────────────────────────
+Background: #F5A623 (amber)
+Center-aligned, compact
+
+H2 (dark green, Playfair Display, 40px): "Ready to grow with trust?"
+Subtext (dark green, 18px): 
+"Join 240,000+ farmers across Southern Africa on AgriTRUST."
+
+Two buttons:
+[Get Started Free →] (dark green, solid)  → /register
+[Learn More] (dark green outline)  → /marketplace
+
+─────────────────────────────────────────────
+ANIMATIONS & INTERACTIONS (About Us page):
+─────────────────────────────────────────────
+- All sections fade-in + slide-up 40px on scroll (IntersectionObserver, 
+  threshold 0.15, once: true so they don't re-animate on scroll back up)
+- Value cards: staggered 80ms delay per card
+- Impact numbers: count-up animation starts when section enters viewport
+- Map dots: continuous CSS pulse animation (keyframes scale 1→1.4→1)
+- Pillar ticker: CSS marquee animation, pauses on hover
+- Video section: subtle parallax on scroll (background moves at 0.5x speed)
+- Hero text: staggered word-by-word reveal on page load
+- Dark mode: all sections transition smoothly (transition-colors duration-300)
+
+─────────────────────────────────────────────
+NAVIGATION UPDATE:
+─────────────────────────────────────────────
+Add /about to the public navbar (before login/register buttons):
+[Home] [About] [Marketplace ↗] [Login] [Get Started]
+
+The /about page is fully accessible without authentication.
+Meta tags for SEO:
+  title: "About AgriTRUST — From Farm to Market, From Soil to Future"
+  description: "AgriTRUST is a global AI, blockchain, and climate-smart 
+  agriculture platform connecting 240,000+ farmers across Southern Africa 
+  to markets, finance, land, and opportunity."
+```
+
+---
+
+## SECTION D — GITHUB INTEGRATION
+
+```
+After the app is working, set up GitHub integration from Replit:
+
+1. In Replit, open the Version Control panel (Git icon in left sidebar)
+2. Click "Connect to GitHub"
+3. Create a new repository: "agritrust-platform" (set to Private)
+4. Initial commit message: "feat: AgriTRUST v0.1 — Full platform prototype"
+
+REPOSITORY STRUCTURE SETUP:
+Create these GitHub files:
+
+.gitignore:
+node_modules/
+.env
+dist/
+.replit
+replit.nix
+*.log
+uploads/
+.DS_Store
+
+README.md content:
+# AgriTRUST Platform
+## Global Agricultural Technology Platform
+
+### Tech Stack
+- Frontend: React 18 + Vite + TailwindCSS
+- Backend: Node.js + Express + PostgreSQL + Prisma
+- Real-time: Socket.io
+- Auth: JWT
+
+### Setup
+1. Clone the repo
+2. Copy .env.example to .env and fill values
+3. Run: npm install (in root, client/, and server/)
+4. Run: npx prisma migrate dev (in server/)
+5. Run: node server/seed/seed.js (seeds 88,000 users ~10 mins)
+6. Run: npm run dev (starts both client and server)
+
+### Features
+[List all 26 pillars from AgriTRUST company profile]
+
+### Seed Data
+- 88,000 users across 5 countries
+- 180,000 listings
+- 95,000 transactions
+- 45,000 barter offers
+- 22,000 land listings
+- 12,000 harvest loans
+- 60 courses + 210,000 enrollments
+- 420,000 impact records
+
+### Environment Variables (.env.example)
+DATABASE_URL=postgresql://...
+JWT_SECRET=your-secret-key
+PORT=3001
+CLIENT_PORT=3000
+NODE_ENV=development
+
+BRANCH STRATEGY:
+- main — stable, deployable
+- develop — integration branch  
+- feature/[name] — individual features
+Create develop branch now and push.
+
+GITHUB ACTIONS (create .github/workflows/ci.yml):
+On push to develop or main:
+- npm install
+- npx prisma validate (schema validation)
+- npm run build (client)
+- npm test (if tests exist)
+
+After every major feature module, commit with semantic messages:
+feat: add DealWise negotiation module
+feat: add QualityScan with AI reporting
+feat: add LandShare land access module
+feat: seed 88k users with realistic African data
+fix: correct FarmScore calculation for new users
+```
+
+---
+
+## SECTION E — DEPLOYMENT & FINAL POLISH
+
+```
+For final deployment polish:
+
+1. ENVIRONMENT:
+   - Set Replit Secrets for all .env values
+   - Enable Replit's always-on feature (Hacker plan)
+   - Set up custom domain if available
+
+2. PERFORMANCE OPTIMIZATIONS:
+   - Add database indexes on: userId, listingId, status, createdAt, location fields
+   - Add Redis caching for: platform stats, market prices, nearby search results
+   - Lazy load heavy components (marketplace map, charts)
+   - Paginate all list endpoints (limit 20 per page)
+   - Compress images on upload (sharp library)
+
+3. MOBILE RESPONSIVENESS:
+   - Test all pages at 375px (iPhone SE) width
+   - Bottom navigation for mobile (5 key items)
+   - All cards must stack to single column on mobile
+   - Touch-friendly tap targets (min 44px height)
+   - Swipe gestures on photo galleries and carousels
+
+4. ACCESSIBILITY:
+   - All images have alt text
+   - Form labels properly associated
+   - Keyboard navigation works throughout
+   - Color contrast meets WCAG AA
+
+5. DEMO MODE:
+   Add a "Demo Mode" toggle on the login page that:
+   - Logs in as a pre-seeded farmer with full data
+   - Shows a guided tour tooltip sequence
+   - Highlights key features in order
+   Useful for investor demos and presentations.
+
+6. LOADING STATES:
+   - Every API call shows a skeleton loader
+   - Error states with retry button
+   - Empty states with helpful CTAs ("No listings yet — post your first listing")
+
+7. FINAL GITHUB PUSH:
+   - Tag the release: git tag v1.0.0-prototype
+   - Push tags: git push --tags
+   - Create a GitHub Release with changelog
+   - Update README with Replit demo link
+   - Add screenshots to README /docs folder
+```
+
+---
+
+## QUICK REFERENCE: KEY ROUTES
+
+| Path | Description |
+|------|-------------|
+| `/` | Landing page (public, shows platform stats) |
+| `/about` | About Us page (public, video + mission + values) |
+| `/login` | Login |
+| `/register` | Multi-step registration |
+| `/dashboard` | Main dashboard (role-adaptive) |
+| `/marketplace` | Agricultural marketplace |
+| `/marketplace/create` | Post a listing |
+| `/marketplace/:id` | Listing detail |
+| `/dealwise` | DealWise negotiation |
+| `/qualityscan` | QualityScan + InputGuard |
+| `/landshare` | LandShare land access |
+| `/harvest-finance` | Harvest Finance module |
+| `/barter` | Barter Exchange board |
+| `/agrihaul` | Transport & logistics |
+| `/agrienergy` | Renewable energy module |
+| `/network` | Farmer social network |
+| `/mentorship` | Mentor network |
+| `/academy` | AgriTRUST Academy courses |
+| `/farm-accounting` | Farm P&L accounting |
+| `/farmscore` | FarmScore breakdown |
+| `/impact` | ImpactLedger dashboard |
+| `/agrisave` | Bookmarks & saved items |
+| `/notifications` | Notification center |
+| `/theft-alerts` | AgriWatch theft alerts |
+| `/disputes` | SafeTrade dispute centre |
+| `/profile/:id` | User public profile |
+| `/settings` | Account settings |
+| `/admin/dashboard` | Gov/NGO analytics (admin) |
+
+---
+
+## ESTIMATED BUILD TIME ON REPLIT AGENT
+
+| Section | Est. Time |
+|---------|-----------|
+| Section A: Scaffold | 15-25 min |
+| Section B: DB + Seed | 30-45 min |
+| Module 1: Auth | 20-30 min |
+| Module 2: Dashboard | 25-35 min |
+| Module 3: Marketplace | 30-40 min |
+| Module 4: DealWise | 20-30 min |
+| Module 5: QualityScan | 15-25 min |
+| Module 6: LandShare | 25-35 min |
+| Module 7: Harvest Finance | 20-30 min |
+| Module 8: AgriHaul | 20-30 min |
+| Module 9: AgriEnergy | 15-25 min |
+| Module 10: Community | 25-35 min |
+| Module 11: AgriSave & Notifs | 15-20 min |
+| Module 12: Impact & Analytics | 20-30 min |
+| Module 13: About Us + Logo + Dark Mode | 25-35 min |
+| **Total** | **~6-9 hours** |
+
+> **Tip:** Use Claude Code (`claude` CLI) between Replit sessions for debugging,
+> refactoring, and complex feature additions. It has better long-context
+> handling for large codebases.
